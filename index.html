@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اغذیه معرفت - طعم نوستالژی ایرانی</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Vazirmatn for better Persian rendering, Inter as fallback -->
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts - Amiri for a nostalgic Persian look -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Vazirmatn', 'Inter', sans-serif; /* Prioritize Vazirmatn for Persian */
+            background-color: #fffaf0; /* Very light yellow/cream for a warm, traditional feel */
+            color: #333;
+            overflow-x: hidden; /* Prevent horizontal scroll due to animations */
+        }
+        /* Custom traditional Iranian colors (Old Red and Old Yellow theme) */
+        /* Old Red: A muted, slightly desaturated red */
+        .bg-iran-old-red { background-color: #a04040; }
+        .text-iran-old-red { color: #a04040; }
+        .border-iran-old-red { border-color: #a04040; }
+
+        /* Old Yellow: A muted, slightly desaturated yellow/ochre */
+        .bg-iran-old-yellow { background-color: #d4a040; }
+        .text-iran-old-yellow { color: #d4a040; }
+        .border-iran-old-yellow { border-color: #d4a040; }
+
+        /* Price text color */
+        .text-black-price { color: #000000; } /* Explicitly black for prices */
+
+        .shadow-traditional { box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.15); } /* Softer, traditional shadow */
+
+        /* Custom scroll-snap for smoother navigation */
+        html {
+            scroll-behavior: smooth;
+        }
+        section {
+            scroll-margin-top: 80px; /* Offset for fixed header */
+        }
+
+        /* Background sliding images styles */
+        .background-slide-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -2; /* Ensure it's behind everything */
+        }
+
+        .background-slide-item {
+            position: absolute;
+            width: 150%; /* Increased size to make images more prominent and fill space */
+            height: 150%; /* Increased size */
+            background-size: cover; /* Keeps images covering the area */
+            background-position: center;
+            filter: blur(0px); /* No blur for clarity */
+            opacity: 0.5; /* Increased opacity for better visibility and vibrancy */
+            animation-iteration-count: infinite;
+            animation-timing-function: linear;
+        }
+
+        /* Define keyframes for sliding animations */
+        @keyframes slideLeftToRight {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        @keyframes slideRightToLeft {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Specific animations for each image */
+        .slide-hamburger {
+            background-image: url('https://images.unsplash.com/photo-1571091718767-18b5b1457add?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            animation: slideLeftToRight 40s linear infinite;
+            left: -100%; /* Start off-screen left */
+        }
+        .slide-indian {
+            background-image: url('https://images.unsplash.com/photo-1589302168068-964722240959?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            animation: slideRightToLeft 45s linear infinite;
+            right: -100%; /* Start off-screen right */
+            animation-delay: 5s; /* Stagger start times */
+        }
+        .slide-omelet {
+            background-image: url('https://images.unsplash.com/photo-1596706952778-b125d0c7f2c2?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            animation: slideLeftToRight 50s linear infinite;
+            left: -100%;
+            animation-delay: 10s;
+        }
+        .slide-sausage { /* Used for cocktail/bandari */
+            background-image: url('https://images.unsplash.com/photo-1621609764095-fd01e523c14d?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            animation: slideRightToLeft 55s linear infinite;
+            right: -100%;
+            animation-delay: 15s;
+        }
+        .slide-hotdog {
+            background-image: url('https://images.unsplash.com/photo-1541781774438-085731b53982?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            animation: slideLeftToRight 60s linear infinite;
+            left: -100%;
+            animation-delay: 20s;
+        }
+        .slide-tea {
+            background-image: url('https://images.unsplash.com/photo-1576092762791-fd190539c298?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            animation: slideRightToLeft 65s linear infinite;
+            right: -100%;
+            animation-delay: 25s;
+        }
+
+        /* Overlay for better content readability */
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 250, 240, 0.4); /* Reduced transparency to show images more */
+            z-index: -1; /* Above background images, below content */
+        }
+
+        /* Menu item hover effect for attractiveness */
+        .menu-item-card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .menu-item-card:hover {
+            transform: translateY(-5px) scale(1.02); /* Lift and slightly enlarge on hover */
+            box-shadow: 10px 10px 0px rgba(0, 0, 0, 0.25); /* Stronger shadow on hover */
+        }
+
+        /* Fix for header title wrapping */
+        .header-title-nowrap {
+            white-space: nowrap;
+        }
+
+        /* Nostalgic Persian font style */
+        .font-nostalgic-persian {
+            font-family: 'Amiri', serif; /* Apply Amiri font */
+            /* You might need to adjust font-size or line-height for better look with this font */
+            /* font-size: 1.1em; */
+        }
+
+        /* Modal styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+            /* Removed overflow-y: auto for "no scroll" requirement in modal */
+            padding: 1rem 0; /* Add some padding for mobile view */
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: #fffaf0;
+            padding: 2rem; /* Slightly reduced padding */
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            max-width: 90%;
+            width: 450px;
+            position: relative;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease-in-out;
+            border: 4px solid #d4a040; /* Old Yellow border */
+        }
+
+        .modal-overlay.show .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #a04040; /* Old Red */
+            transition: color 0.2s ease-in-out;
+        }
+        .modal-close-btn:hover {
+            color: #7a2a2a; /* Darker red on hover */
+        }
+
+        .amount-option {
+            background-color: #f0f0f0;
+            border: 2px solid #ccc;
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            font-weight: 600;
+            color: #555;
+            font-family: 'Amiri', serif; /* Apply nostalgic font to numbers */
+        }
+        .amount-option:hover {
+            background-color: #e0e0e0;
+            border-color: #a04040;
+        }
+        .amount-option.selected {
+            background-color: #d4a040; /* Old Yellow */
+            border-color: #a04040; /* Old Red */
+            color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        .amount-option.selected:hover {
+            background-color: #c08c30; /* Slightly darker yellow */
+        }
+
+        .custom-amount-input, .text-input {
+            border: 2px solid #ccc;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .custom-amount-input:focus, .text-input:focus {
+            outline: none;
+            border-color: #a04040; /* Old Red */
+            box-shadow: 0 0 0 3px rgba(160, 64, 64, 0.2);
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px dashed #eee;
+        }
+        .order-item:last-child {
+            border-bottom: none;
+        }
+        .quantity-input {
+            width: 60px;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 0.25rem;
+            padding: 0.25rem;
+        }
+
+        /* Adjust header height to be more balanced */
+        .header-balanced {
+            padding-top: 0.75rem; /* py-3 */
+            padding-bottom: 0.75rem; /* py-3 */
+            min-height: 70px; /* Ensure consistent height */
+        }
+        .header-balanced h1 {
+            font-size: 2.5rem; /* text-4xl to text-3xl */
+        }
+        .header-balanced p {
+            font-size: 1rem; /* text-lg to text-base */
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- Background Sliding Images Container -->
+    <div class="background-slide-container">
+        <div class="background-slide-item slide-hamburger"></div>
+        <div class="background-slide-item slide-indian"></div>
+        <div class="background-slide-item slide-omelet"></div>
+        <div class="background-slide-item slide-sausage"></div>
+        <div class="background-slide-item slide-hotdog"></div>
+        <div class="background-slide-item slide-tea"></div>
+    </div>
+
+    <!-- Semi-transparent overlay for content readability -->
+    <div class="background-overlay"></div>
+
+    <!-- Header Section -->
+    <header class="bg-iran-old-red text-white shadow-lg sticky top-0 z-50 header-balanced">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
+            <!-- Logo and Slogan with Tea Icon -->
+            <div class="flex items-center mb-4 md:mb-0">
+                <div class="text-center md:text-right">
+                    <h1 class="font-extrabold mb-1 rounded-lg p-2 inline-block bg-iran-old-yellow shadow-md header-title-nowrap font-nostalgic-persian" id="header-title">اغذیه معرفت</h1>
+                    <p class="mt-2 font-nostalgic-persian" id="header-slogan" data-standard="طعم نوستالژی و خاطره‌انگیز ایرانی" data-isfahani="طعمی که یادت میمونِد">طعم نوستالژی و خاطره‌انگیز ایرانی</p>
+                </div>
+                <!-- Tea Icon for Donation - Moved to be next to the logo/slogan -->
+                <a href="#" class="hover:text-iran-old-yellow transition duration-300 rounded-md px-3 py-1 flex items-center mr-4 md:mr-0 md:ml-4" id="open-donation-modal-btn" aria-label="کمک مالی">
+                    <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                        <!-- Saucer -->
+                        <path d="M2 17c0 1.104.896 2 2 2h16c1.104 0 2-.896 2-2s-.896-2-2-2H4c-1.104 0-2 .896-2 2z" />
+                        <!-- Cup Body (Kamar Barik - more accurate with Bezier curves) -->
+                        <path d="M8 5 C6 7, 6 10, 8 12 S 10 15, 8 17 H 16 S 14 15, 16 12 C 18 10, 18 7, 16 5 Z" />
+                        <!-- Tea Liquid (half-full, slightly off-white for distinction) -->
+                        <rect x="9.5" y="11" width="5" height="2" fill="#F0F0F0" />
+                        <!-- Handle -->
+                        <path d="M16 8 C18 8, 19 10, 19 12 S 18 16, 16 14" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                    </svg>
+                </a>
+            </div>
+            <!-- Navigation -->
+            <nav>
+                <ul class="flex flex-wrap justify-center md:justify-end gap-4 text-lg font-semibold">
+                    <li><a href="#home" class="hover:text-iran-old-yellow transition duration-300 rounded-md px-3 py-1" data-key="home">صفحه اصلی</a></li>
+                    <li><a href="#menu" class="hover:text-iran-old-yellow transition duration-300 rounded-md px-3 py-1" data-key="menu">منو</a></li>
+                    <li><a href="#about" class="hover:text-iran-old-yellow transition duration-300 rounded-md px-3 py-1" id="nav-about" data-standard="درباره ما" data-isfahani="آ یُخته راجبمون بدون">درباره ما</a></li>
+                    <li><a href="#" class="hover:text-iran-old-yellow transition duration-300 rounded-md px-3 py-1" id="open-order-modal-btn">سفارش آنلاین</a></li>
+                    <li><a href="#contact" class="hover:text-iran-old-yellow transition duration-300 rounded-md px-3 py-1" id="nav-contact" data-standard="تماس با ما" data-isfahani="زنگمون بِزِن">تماس با ما</a></li>
+                    <li>
+                        <button id="dialect-toggle-btn" class="bg-iran-old-yellow text-iran-old-red px-3 py-1 rounded-md hover:bg-iran-old-red hover:text-white transition duration-300 font-bold">حالت اصفهانی</button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-4 py-8 relative z-0">
+        <!-- Hero Section -->
+        <section id="home" class="bg-white rounded-xl shadow-traditional p-8 mb-12 text-center border-4 border-iran-old-yellow">
+            <h2 class="text-3xl md:text-4xl font-bold text-iran-old-red mb-4 font-nostalgic-persian" id="hero-welcome-title">به اغذیه معرفت خوش آمدید!</h2>
+            <p class="text-lg md:text-xl leading-relaxed">
+                سفری به گذشته، با طعم‌های اصیل و فراموش‌نشدنی.
+                ما در "اغذیه معرفت" هنر آشپزی سنتی را با سرعت فست فود ترکیب کرده‌ایم تا تجربه‌ای بی‌نظیر برای شما فراهم آوریم.
+            </p>
+            <div class="w-full max-w-lg mx-auto rounded-xl overflow-hidden border-4 border-iran-old-red shadow-lg">
+                <!-- Image of غذای اصیل ایرانی -->
+                <img src="https://placehold.co/800x450/a04040/FFFFFF" alt="تصویری از غذای اصیل ایرانی" class="w-full h-auto object-cover rounded-md">
+            </div>
+        </section>
+
+        <!-- Menu Section -->
+        <section id="menu" class="bg-white rounded-xl shadow-traditional p-8 mb-12 border-4 border-iran-old-red">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-iran-old-yellow mb-8 font-nostalgic-persian" data-key="menu-title">منوی ما</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Menu Item 1 -->
+                <div class="bg-stone-50 p-6 rounded-lg shadow-md border-2 border-iran-old-yellow menu-item-card">
+                    <h3 class="text-2xl font-semibold text-iran-old-red mb-2 font-nostalgic-persian">ساندویچ کالباس سنتی</h3>
+                    <p class="text-gray-700 mb-4" id="menu-item-1-desc">کالباس ممتاز، خیارشور، گوجه، کاهو و سس مخصوص معرفت.</p>
+                    <span class="text-xl font-bold text-black-price">قیمت: 125,000 تومان</span>
+                </div>
+                <!-- Menu Item 2 -->
+                <div class="bg-stone-50 p-6 rounded-lg shadow-md border-2 border-iran-old-yellow menu-item-card">
+                    <h3 class="2xl font-semibold text-iran-old-red mb-2 font-nostalgic-persian" id="menu-item-2-title">همبرگر دست‌ساز معرفت</h3>
+                    <p class="text-gray-700 mb-4">همبرگر گوشت تازه، پنیر، پیاز، خیارشور و سس ویژه خانگی.</p>
+                    <span class="text-xl font-bold text-black-price">قیمت: 160,000 تومان</span>
+                </div>
+                <!-- Menu Item 3 -->
+                <div class="bg-stone-50 p-6 rounded-lg shadow-md border-2 border-iran-old-yellow menu-item-card">
+                    <h3 class="text-2xl font-semibold text-iran-old-red mb-2 font-nostalgic-persian">سیب‌زمینی سرخ کرده زعفرانی</h3>
+                    <p class="text-gray-700 mb-4">سیب‌زمینی تازه و ترد، با نمک و چاشنی زعفرانی.</p>
+                    <span class="text-xl font-bold text-black-price">قیمت: 75,000 تومان</span>
+                </div>
+                <!-- Menu Item 4 -->
+                <div class="bg-stone-50 p-6 rounded-lg shadow-md border-2 border-iran-old-yellow menu-item-card">
+                    <h3 class="text-2xl font-semibold text-iran-old-red mb-2 font-nostalgic-persian">ساندویچ بندری تند</h3>
+                    <p class="text-gray-700 mb-4">سوسیس بندری تند و خوشمزه، با پیاز و سس گوجه سنتی.</p>
+                    <span class="text-xl font-bold text-black-price">قیمت: 115,000 تومان</span>
+                </div>
+                <!-- Menu Item 5 -->
+                <div class="bg-stone-50 p-6 rounded-lg shadow-md border-2 border-iran-old-yellow menu-item-card">
+                    <h3 class="text-2xl font-semibold text-iran-old-red mb-2 font-nostalgic-persian">دوغ محلی و نوشیدنی‌های سنتی</h3>
+                    <p class="text-gray-700 mb-4">دوغ محلی، شربت‌های سنتی و نوشابه‌های شیشه‌ای قدیمی.</p>
+                    <span class="text-xl font-bold text-black-price">قیمت: 35,000 تومان</span>
+                </div>
+                <!-- Menu Item 6 -->
+                <div class="bg-stone-50 p-6 rounded-lg shadow-md border-2 border-iran-old-yellow menu-item-card">
+                    <h3 class="text-2xl font-semibold text-iran-old-red mb-2 font-nostalgic-persian">سالاد شیرازی اصیل</h3>
+                    <p class="text-gray-700 mb-4">سالاد شیرازی تازه با خیار، گوجه، پیاز و آبغوره.</p>
+                    <span class="text-xl font-bold text-black-price">قیمت: 80,000 تومان</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Us Section -->
+        <section id="about" class="bg-white rounded-xl shadow-traditional p-8 mb-12 text-center border-4 border-iran-old-yellow">
+            <h2 class="text-3xl md:text-4xl font-bold text-iran-old-red mb-4 font-nostalgic-persian" id="about-section-title">درباره اغذیه معرفت</h2>
+            <p class="text-lg md:text-xl leading-relaxed" id="about-main-paragraph-content">
+                اغذیه معرفت با بیش از نیم قرن تجربه، مکانی است که در آن عطر و طعم غذاهای سنتی ایرانی با سرعت و کیفیت فست فودهای امروزی ترکیب شده است. ما با استفاده از مواد اولیه تازه و دستور پخت‌های اصیل، تلاش می‌کنیم تا خاطرات خوش دوران گذشته را برای شما زنده کنیم و تجربه‌ای بی‌نظیر از غذاهای نوستالژیک را ارائه دهیم. هدف ما، ارائه بهترین کیفیت و طعم به مشتریان عزیزمان است.
+            </p>
+            <div class="mt-8">
+                <button id="generate-story-btn" class="bg-iran-old-yellow text-iran-old-red px-6 py-3 rounded-lg font-bold text-lg hover:bg-iran-old-red hover:text-white transition duration-300 shadow-md flex items-center justify-center mx-auto">
+                    <span class="ml-2" id="generate-story-btn-text">✨ خاطره‌ای از معرفت ✨</span>
+                </button>
+                <div id="story-loading-indicator" class="mt-4 text-iran-old-red font-semibold hidden">درحال جستجوی خاطره</div>
+                <div id="generated-story-output" class="mt-6 p-4 bg-stone-50 rounded-lg border-2 border-iran-old-yellow text-gray-800 text-lg text-right leading-loose hidden">
+                    <!-- Generated story will appear here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Us Section -->
+        <section id="contact" class="bg-white rounded-xl shadow-traditional p-8 border-4 border-iran-old-red">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-iran-old-yellow mb-8 font-nostalgic-persian" id="contact-section-title" data-standard="تماس با ما" data-isfahani="زنگمون بِزِن">تماس با ما</h2>
+            <div class="flex flex-col md:flex-row justify-around items-center gap-8">
+                <div class="text-center">
+                    <h3 class="text-2xl font-semibold text-iran-old-red mb-2 font-nostalgic-persian" id="contact-address-title" data-standard="نشانی" data-isfahani="نشونی">نشونی</h3>
+                    <p class="text-lg" id="contact-address-text" data-standard="اصفهان، خیابان مارنان" data-isfahani="اصفهون، نصف جهون، خیابون مارنون">اصفهان، خیابان مارنان</p>
+                </div>
+                <div class="text-center">
+                    <h3 class="text-2xl font-semibold text-iran-old-red mb-2 font-nostalgic-persian" id="contact-phone-title" data-standard="تلفن" data-isfahani="تیلیفون">تلفن</h3>
+                    <p class="text-lg">031-12345678</p>
+                </div>
+                <div class="text-center">
+                    <h3 class="text-2xl font-semibold text-iran-old-red mb-2 font-nostalgic-persian" id="contact-hours-title" data-standard="ساعات کاری" data-isfahani="ساعِتی کاری">ساعات کاری</h3>
+                    <p class="text-lg" id="contact-hours-text" data-standard="از هفت صبح تا دوازده شب" data-isfahani="اِز خوروس خونی ته باغ تا پرسه زِنونی سِگا شاغال">از هفت صبح تا دوازده شب</p>
+                </div>
+            </div>
+            <div class="mt-8 text-center">
+                <h3 class="text-2xl font-semibold text-iran-old-red mb-4 font-nostalgic-persian" data-key="social-title">ما را در شبکه‌های اجتماعی دنبال کنید:</h3>
+                <div class="flex justify-center gap-6 text-3xl">
+                    <a href="#" class="text-iran-old-red hover:text-iran-old-yellow transition duration-300" aria-label="اینستاگرام">
+                        <!-- Image of Instagram icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-instagram"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                    </a>
+                    <a href="#" class="text-iran-old-red hover:text-iran-old-yellow transition duration-300" aria-label="تلگرام">
+                        <!-- Image of Telegram icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-send"><path d="m22 2-7 20-4-9-9-4 20-7Z"/><path d="M15 11l4 4"/></svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Order Modal -->
+    <div id="order-modal-overlay" class="modal-overlay">
+        <div class="modal-content">
+            <button id="close-order-modal-btn" class="modal-close-btn">&times;</button>
+            <h3 class="text-2xl font-bold text-iran-old-red mb-4 text-center">ثبت سفارش آنلاین</h3>
+            <p class="text-gray-700 mb-6 text-center">لطفاً اقلام مورد نظر و اطلاعات تماس خود را وارد کنید.</p>
+
+            <div class="mb-6 max-h-60 overflow-y-auto border border-gray-300 rounded-lg p-2">
+                <!-- Menu items for ordering -->
+                <div class="order-item">
+                    <span class="text-gray-800">ساندویچ کالباس سنتی</span>
+                    <input type="number" class="quantity-input" data-item="ساندویچ کالباس سنتی" min="0" value="0">
+                </div>
+                <div class="order-item">
+                    <span class="text-gray-800">همبرگر دست‌ساز معرفت</span>
+                    <input type="number" class="quantity-input" data-item="همبرگر دست‌ساز معرفت" min="0" value="0">
+                </div>
+                <div class="order-item">
+                    <span class="text-gray-800">سیب‌زمینی سرخ کرده زعفرانی</span>
+                    <input type="number" class="quantity-input" data-item="سیب‌زمینی سرخ کرده زعفرانی" min="0" value="0">
+                </div>
+                <div class="order-item">
+                    <span class="text-gray-800">ساندویچ بندری تند</span>
+                    <input type="number" class="quantity-input" data-item="ساندویچ بندری تند" min="0" value="0">
+                </div>
+                <div class="order-item">
+                    <span class="text-gray-800">دوغ محلی و نوشیدنی‌های سنتی</span>
+                    <input type="number" class="quantity-input" data-item="دوغ محلی و نوشیدنی‌های سنتی" min="0" value="0">
+                </div>
+                <div class="order-item">
+                    <span class="text-gray-800">سالاد شیرازی اصیل</span>
+                    <input type="number" class="quantity-input" data-item="سالاد شیرازی اصیل" min="0" value="0">
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label for="customer-name" class="block text-gray-700 text-sm font-bold mb-2">نام شما:</label>
+                <input type="text" id="customer-name" class="text-input" placeholder="نام و نام خانوادگی">
+            </div>
+            <div class="mb-6">
+                <label for="customer-phone" class="block text-gray-700 text-sm font-bold mb-2">شماره تلفن (مثال: 09123456789):</label>
+                <input type="tel" id="customer-phone" class="text-input" placeholder="09xxxxxxxxx" pattern="09[0-9]{9}" required>
+            </div>
+
+            <button id="place-order-btn" class="w-full bg-iran-old-red text-white py-3 rounded-lg font-bold text-lg hover:bg-iran-old-yellow hover:text-iran-old-red transition duration-300 shadow-md">ثبت سفارش</button>
+
+            <div id="order-message" class="mt-4 text-center text-sm font-semibold text-green-700 hidden"></div>
+        </div>
+    </div>
+
+    <!-- Donation Modal -->
+    <div id="donation-modal-overlay" class="modal-overlay">
+        <div class="modal-content">
+            <button id="close-donation-modal-btn" class="modal-close-btn">&times;</button>
+            <h3 class="text-2xl font-bold text-iran-old-red mb-4 text-center">کمک مالی به اغذیه معرفت</h3>
+            <p class="text-gray-700 mb-6 text-center">برای کمک به آنی که شب را تا صبح بی غذا می گذراند</p>
+
+            <div class="flex flex-wrap justify-center gap-4 mb-6">
+                <button class="amount-option" data-amount="35000">35,000 تومان</button>
+                <button class="amount-option" data-amount="55000">55,000 تومان</button>
+                <button class="amount-option" data-amount="100000">100,000 تومان</button>
+                <button class="amount-option" data-amount="180000">180,000 تومان</button>
+                <button class="amount-option" data-amount="350000">350,000 تومان</button>
+                <button class="amount-option" data-amount="500000">500,000 تومان</button>
+                <button class="amount-option" data-amount="1000000">1,000,000 تومان</button>
+            </div>
+
+            <div class="mb-6">
+                <label for="custom-amount" class="block text-gray-700 text-sm font-bold mb-2">مبلغ دلخواه (تومان):</label>
+                <input type="number" id="custom-amount" class="custom-amount-input" placeholder="مثال: 150000" min="1000">
+            </div>
+
+            <button id="pay-donation-btn" class="w-full bg-iran-old-red text-white py-3 rounded-lg font-bold text-lg hover:bg-iran-old-yellow hover:text-iran-old-red transition duration-300 shadow-md">پرداخت</button>
+
+            <div id="payment-message" class="mt-4 text-center text-sm font-semibold text-green-700 hidden"></div>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="bg-iran-old-red text-white py-6 mt-8">
+        <div class="container mx-auto px-4 text-center text-sm">
+            <p>&copy; 2025 اغذیه معرفت. تمامی حقوق محفوظ است.</p>
+            <p class="mt-2">با عشق از اصفهان، ایران</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // DOM Elements
+            const dialectToggleBtn = document.getElementById('dialect-toggle-btn');
+            const headerTitle = document.getElementById('header-title');
+            const headerSlogan = document.getElementById('header-slogan');
+            const navAbout = document.getElementById('nav-about');
+            const navContact = document.getElementById('nav-contact');
+            const heroWelcomeTitle = document.getElementById('hero-welcome-title');
+            const aboutMainParagraphContent = document.getElementById('about-main-paragraph-content');
+            const menuMenuItem1Desc = document.getElementById('menu-item-1-desc');
+            const menuMenuItem2Title = document.getElementById('menu-item-2-title');
+            const aboutSectionTitle = document.getElementById('about-section-title');
+            const contactAddressTitle = document.getElementById('contact-address-title');
+            const contactAddressText = document.getElementById('contact-address-text');
+            const contactPhoneTitle = document.getElementById('contact-phone-title');
+            const contactHoursTitle = document.getElementById('contact-hours-title');
+            const contactHoursText = document.getElementById('contact-hours-text');
+            const contactSectionTitle = document.getElementById('contact-section-title');
+
+            // Donation Modal Elements
+            const openDonationModalBtn = document.getElementById('open-donation-modal-btn');
+            const donationModalOverlay = document.getElementById('donation-modal-overlay');
+            const closeDonationModalBtn = document.getElementById('close-donation-modal-btn');
+            const amountOptions = document.querySelectorAll('.amount-option');
+            const customAmountInput = document.getElementById('custom-amount');
+            const payDonationBtn = document.getElementById('pay-donation-btn');
+            const paymentMessage = document.getElementById('payment-message');
+
+            // Order Modal Elements
+            const openOrderModalBtn = document.getElementById('open-order-modal-btn');
+            const orderModalOverlay = document.getElementById('order-modal-overlay');
+            const closeOrderModalBtn = document.getElementById('close-order-modal-btn');
+            const quantityInputs = document.querySelectorAll('.quantity-input');
+            const customerNameInput = document.getElementById('customer-name');
+            const customerPhoneInput = document.getElementById('customer-phone');
+            const placeOrderBtn = document.getElementById('place-order-btn');
+            const orderMessage = document.getElementById('order-message');
+
+            // Gemini API elements (Re-added)
+            const generateStoryBtn = document.getElementById('generate-story-btn');
+            const generateStoryBtnText = document.getElementById('generate-story-btn-text');
+            const storyLoadingIndicator = document.getElementById('story-loading-indicator');
+            const generatedStoryOutput = document.getElementById('generated-story-output');
+
+
+            let selectedAmount = 0; // To store the selected donation amount
+            let isIsfahaniMode = false; // State for dialect toggle
+
+            // Function to convert Western digits to Persian digits
+            function convertToPersianDigits(num) {
+                const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+                return String(num).replace(/\d/g, digit => persianDigits[digit]);
+            }
+
+            // Function to format numbers with commas and Persian digits
+            function formatPrice(price) {
+                return convertToPersianDigits(price.toLocaleString('en-US'));
+            }
+
+            // Dialect Toggle Logic
+            const updateTextContent = () => {
+                const elements = [
+                    { elem: headerSlogan, standard: headerSlogan.dataset.standard, isfahani: headerSlogan.dataset.isfahani },
+                    { elem: navAbout, standard: navAbout.dataset.standard, isfahani: navAbout.dataset.isfahani },
+                    { elem: navContact, standard: navContact.dataset.standard, isfahani: navContact.dataset.isfahani },
+                    { elem: heroWelcomeTitle, standard: "به اغذیه معرفت خوش آمدید!", isfahani: "اغذیه معرفت، خوش اومِدین!" },
+                    { elem: aboutSectionTitle, standard: "درباره اغذیه معرفت", isfahani: "آ یُخته راجب اغذیه معرفت بدونین" },
+                    { elem: aboutMainParagraphContent, standard: "اغذیه معرفت با بیش از نیم قرن تجربه، مکانی است که در آن عطر و طعم غذاهای سنتی ایرانی با سرعت و کیفیت فست فودهای امروزی ترکیب شده است. ما با استفاده از مواد اولیه تازه و دستور پخت‌های اصیل، تلاش می‌کنیم تا خاطرات خوش دوران گذشته را برای شما زنده کنیم و تجربه‌ای بی‌نظیر از غذاهای نوستالژیک را ارائه دهیم. هدف ما، ارائه بهترین کیفیت و طعم به مشتریان عزیزمان است.", isfahani: "اغذیه معرفت، با نیم قرن سابقه، یه جاست که عطر و بوی غذاهای قدیمیمون با سرعت فست فودای الان قاطی شده. ما با مواد تازه و دستور پختای ناب، سعی می‌کنیم خاطرات خوب گذشته رو واستون زنده کنیم و یه تجربه توپ از غذاهای قدیمی بهتون بدیم. هدفمونم اینه که بهترین کیفیت و طعمو به مشتریای گلمون بدیم." },
+                    { elem: contactSectionTitle, standard: contactSectionTitle.dataset.standard, isfahani: contactSectionTitle.dataset.isfahani },
+                    { elem: contactAddressTitle, standard: contactAddressTitle.dataset.standard, isfahani: contactAddressTitle.dataset.isfahani },
+                    { elem: contactAddressText, standard: contactAddressText.dataset.standard, isfahani: contactAddressText.dataset.isfahani },
+                    { elem: contactPhoneTitle, standard: contactPhoneTitle.dataset.standard, isfahani: contactPhoneTitle.dataset.isfahani },
+                    { elem: contactHoursTitle, standard: contactHoursTitle.dataset.standard, isfahani: contactHoursTitle.dataset.isfahani },
+                    { elem: contactHoursText, standard: contactHoursText.dataset.standard, isfahani: contactHoursText.dataset.isfahani },
+                    { elem: document.querySelector('[data-key="menu-title"]'), standard: "منوی ما", isfahani: "لیست غذاهامون" },
+                    { elem: document.querySelector('#menu-item-1-desc'), standard: "کالباس ممتاز، خیارشور، گوجه، کاهو و سس مخصوص معرفت.", isfahani: "کالباس خوب، خیارشور، گوجه، کاهو و سس مخصوص معرفت." },
+                    { elem: document.querySelector('#menu-item-2-title'), standard: "همبرگر دست‌ساز معرفت", isfahani: "همبرگر خُمپز معرفت" },
+                    { elem: dialectToggleBtn, standard: "حالت اصفهانی", isfahani: "حالت اصفهونی" }
+                ];
+
+                elements.forEach(({ elem, standard, isfahani }) => {
+                    if (elem) {
+                        elem.textContent = isIsfahaniMode ? isfahani : standard;
+                    }
+                });
+            };
+
+            dialectToggleBtn.addEventListener('click', () => {
+                isIsfahaniMode = !isIsfahaniMode;
+                updateTextContent();
+            });
+
+            // Initial text update
+            updateTextContent();
+
+            // Donation Modal Logic
+            openDonationModalBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                donationModalOverlay.classList.add('show');
+                document.body.style.overflow = 'hidden'; // Prevent scrolling background
+            });
+
+            closeDonationModalBtn.addEventListener('click', () => {
+                donationModalOverlay.classList.remove('show');
+                document.body.style.overflow = ''; // Restore scrolling
+                paymentMessage.textContent = ''; // Clear message
+                customAmountInput.value = ''; // Clear custom amount
+                amountOptions.forEach(btn => btn.classList.remove('selected')); // Deselect all
+                selectedAmount = 0;
+            });
+
+            amountOptions.forEach(button => {
+                button.addEventListener('click', () => {
+                    amountOptions.forEach(btn => btn.classList.remove('selected'));
+                    button.classList.add('selected');
+                    selectedAmount = parseInt(button.dataset.amount);
+                    customAmountInput.value = ''; // Clear custom input if a preset is selected
+                });
+            });
+
+            customAmountInput.addEventListener('input', () => {
+                amountOptions.forEach(btn => btn.classList.remove('selected')); // Deselect presets
+                selectedAmount = parseInt(customAmountInput.value) || 0;
+            });
+
+            payDonationBtn.addEventListener('click', () => {
+                if (selectedAmount > 0) {
+                    // In a real application, this would integrate with a payment gateway.
+                    // For now, we just show a success message.
+                    paymentMessage.textContent = `مبلغ ${formatPrice(selectedAmount)} تومان با موفقیت پرداخت شد. از کمک شما سپاسگزاریم!`;
+                    paymentMessage.classList.remove('hidden', 'text-red-700');
+                    paymentMessage.classList.add('text-green-700');
+                    setTimeout(() => {
+                        donationModalOverlay.classList.remove('show');
+                        document.body.style.overflow = '';
+                        paymentMessage.textContent = '';
+                        customAmountInput.value = '';
+                        amountOptions.forEach(btn => btn.classList.remove('selected'));
+                        selectedAmount = 0;
+                    }, 3000); // Close modal and clear message after 3 seconds
+                } else {
+                    paymentMessage.textContent = 'لطفاً مبلغی را برای کمک انتخاب کنید یا وارد نمایید.';
+                    paymentMessage.classList.remove('hidden', 'text-green-700');
+                    paymentMessage.classList.add('text-red-700');
+                }
+            });
+
+            // Order Modal Logic
+            openOrderModalBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                orderModalOverlay.classList.add('show');
+                document.body.style.overflow = 'hidden'; // Prevent scrolling background
+            });
+
+            closeOrderModalBtn.addEventListener('click', () => {
+                orderModalOverlay.classList.remove('show');
+                document.body.style.overflow = ''; // Restore scrolling
+                orderMessage.textContent = ''; // Clear message
+                customerNameInput.value = ''; // Clear inputs
+                customerPhoneInput.value = '';
+                quantityInputs.forEach(input => input.value = '0'); // Reset quantities
+            });
+
+            placeOrderBtn.addEventListener('click', () => {
+                const customerName = customerNameInput.value.trim();
+                const customerPhone = customerPhoneInput.value.trim();
+                const selectedItems = [];
+
+                quantityInputs.forEach(input => {
+                    const quantity = parseInt(input.value);
+                    if (quantity > 0) {
+                        selectedItems.push({
+                            item: input.dataset.item,
+                            quantity: quantity
+                        });
+                    }
+                });
+
+                if (customerName && customerPhone && selectedItems.length > 0) {
+                    let orderDetails = `سفارش جدید:\nنام: ${customerName}\nتلفن: ${customerPhone}\nاقلام سفارش:`;
+                    selectedItems.forEach(item => {
+                        orderDetails += `\n- ${item.item}: ${convertToPersianDigits(item.quantity)} عدد`;
+                    });
+
+                    // In a real application, this would send data to a backend (e.g., via fetch to a server or Firebase)
+                    // For now, we just simulate success.
+                    console.log(orderDetails); // Log to console for demonstration
+
+                    orderMessage.textContent = 'سفارش شما با موفقیت ثبت شد! به زودی با شما تماس خواهیم گرفت.';
+                    orderMessage.classList.remove('hidden', 'text-red-700');
+                    orderMessage.classList.add('text-green-700');
+                    setTimeout(() => {
+                        orderModalOverlay.classList.remove('show');
+                        document.body.style.overflow = '';
+                        orderMessage.textContent = '';
+                        customerNameInput.value = '';
+                        customerPhoneInput.value = '';
+                        quantityInputs.forEach(input => input.value = '0');
+                    }, 3000);
+                } else {
+                    orderMessage.textContent = 'لطفاً نام، شماره تلفن و حداقل یک مورد را برای سفارش انتخاب کنید.';
+                    orderMessage.classList.remove('hidden', 'text-green-700');
+                    orderMessage.classList.add('text-red-700');
+                }
+            });
+
+            // Gemini API Integration for Story Generation (Re-added and fixed)
+            generateStoryBtn.addEventListener('click', async () => {
+                storyLoadingIndicator.classList.remove('hidden');
+                generatedStoryOutput.classList.add('hidden'); // Hide previous output
+                generatedStoryOutput.textContent = ''; // Clear previous text
+                generateStoryBtnText.textContent = 'درحال جستجوی خاطره'; // Update button text
+
+                try {
+                    // API Key handling: For Canvas, leave it empty. Canvas runtime will inject it.
+                    // For Netlify, you would set REACT_APP_GEMINI_API_KEY as an environment variable.
+                    const apiKey = ""; // این مقدار به صورت خودکار توسط محیط Canvas فراهم می‌شود.
+                    const prompt = "یک خاطره کوتاه و جذاب (حدود 50 کلمه) از یک اغذیه فروشی قدیمی در اصفهان بنویس که حس نوستالژی و طعم‌های سنتی را منتقل کند. لحن آن دوستانه و کمی محاوره ای باشد و به غذاهای ساده و خوشمزه اشاره کند. از جملاتی که نشان دهد به شما دستور داده شده است (مانند 'بر اساس دستور شما') خودداری کنید.";
+                    let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+
+                    const payload = { contents: chatHistory };
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(`API call failed with status ${response.status}: ${errorData.error.message || 'Unknown error'}`);
+                    }
+
+                    const result = await response.json();
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        const storyText = result.candidates[0].content.parts[0].text;
+                        generatedStoryOutput.textContent = storyText;
+                        generatedStoryOutput.classList.remove('hidden');
+                    } else {
+                        generatedStoryOutput.textContent = 'متاسفم، نتوانستم خاطره‌ای پیدا کنم. لطفاً دوباره تلاش کنید.';
+                        generatedStoryOutput.classList.remove('hidden');
+                    }
+                } catch (error) {
+                    console.error("Error generating story:", error);
+                    generatedStoryOutput.textContent = `خطا در دریافت خاطره: ${error.message}. لطفاً اتصال اینترنت خود را بررسی کرده و دوباره تلاش کنید.`;
+                    generatedStoryOutput.classList.remove('hidden');
+                } finally {
+                    storyLoadingIndicator.classList.add('hidden');
+                    generateStoryBtnText.textContent = '✨ خاطره‌ای از معرفت ✨'; // Reset button text
+                }
+            });
+        });
+    </script>
+</body>
+</html>
