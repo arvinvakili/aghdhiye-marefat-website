@@ -545,9 +545,12 @@
         import { getFirestore, doc, getDoc, updateDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // Global Firebase variables (Will be provided by Canvas/Netlify runtime)
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        // این بخش برای Netlify تغییر کرده است
+        // تغییرات: استفاده از __firebase_config و __app_id که مستقیماً توسط محیط تزریق می شوند
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id'; // استفاده از __app_id
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
 
         let app;
         let db;
@@ -557,27 +560,33 @@
         // Initialize Firebase and authenticate
         async function initializeFirebase() {
             try {
-                app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
-                auth = getAuth(app);
+                // فقط اگر firebaseConfig دارای apiKey باشد Firebase را مقداردهی اولیه می کنیم
+                // این بررسی اطمینان می دهد که اگر در محیط Canvas/Netlify متغیرها تزریق نشدند، خطا ندهد.
+                if (firebaseConfig.apiKey) {
+                    app = initializeApp(firebaseConfig);
+                    db = getFirestore(app);
+                    auth = getAuth(app);
 
-                // Sign in with custom token if available, otherwise anonymously
-                if (initialAuthToken) {
-                    await signInWithCustomToken(auth, initialAuthToken);
-                } else {
-                    await signInAnonymously(auth);
-                }
-
-                // Listen for auth state changes to get the user ID
-                onAuthStateChanged(auth, (user) => {
-                    if (user) {
-                        userId = user.uid;
-                        console.log("Firebase authenticated. User ID:", userId);
+                    // Sign in with custom token if available, otherwise anonymously
+                    if (initialAuthToken) {
+                        await signInWithCustomToken(auth, initialAuthToken);
                     } else {
-                        console.log("Firebase not authenticated. Using anonymous ID.");
-                        userId = crypto.randomUUID(); // Generate a random ID for anonymous users
+                        await signInAnonymously(auth);
                     }
-                });
+
+                    // Listen for auth state changes to get the user ID
+                    onAuthStateChanged(auth, (user) => {
+                        if (user) {
+                            userId = user.uid;
+                            console.log("Firebase authenticated. User ID:", userId);
+                        } else {
+                            console.log("Firebase not authenticated. Using anonymous ID.");
+                            userId = crypto.randomUUID(); // Generate a random ID for anonymous users
+                        }
+                    });
+                } else {
+                    console.warn("Firebase configuration is missing. Discount service will not be available.");
+                }
 
             } catch (error) {
                 console.error("Error initializing Firebase:", error);
@@ -683,8 +692,8 @@
                 const enteredCode = discountCodeInput.value.trim().toUpperCase();
 
                 if (enteredCode) {
-                    if (!db) {
-                        console.error("Firestore is not initialized.");
+                    if (!db) { // Check if Firestore is initialized
+                        console.error("Firestore is not initialized. Discount service is unavailable.");
                         discountMessageArea.textContent = 'خطا: سرویس تخفیف در دسترس نیست.';
                         discountMessageArea.classList.remove('hidden', 'text-green-700');
                         discountMessageArea.classList.add('text-red-700');
@@ -695,6 +704,7 @@
 
                     try {
                         // Query discount codes from Firestore
+                        // Adjusted path to use appId from global __app_id
                         const q = query(collection(db, `artifacts/${appId}/public/data/discountCodes`), where("code", "==", enteredCode));
                         const querySnapshot = await getDocs(q);
 
@@ -705,7 +715,8 @@
 
                             // Check expiry date
                             const now = new Date();
-                            const expiryDate = discountData.expiryDate ? new Date(discountData.expiryDate) : null; // Assuming expiryDate is ISO string or similar
+                            // Ensure expiryDate is treated as a Date object from Firestore Timestamp
+                            const expiryDate = discountData.expiryDate ? discountData.expiryDate.toDate() : null;
 
                             if (expiryDate && now > expiryDate) {
                                 discountMessageArea.textContent = 'کد تخفیف منقضی شده است.';
@@ -719,7 +730,8 @@
                                 discountMessageArea.classList.add('text-red-700');
                             }
                             // Check if code is active for a specific user (if applicable)
-                            else if (discountData.assignedToUserId && discountData.assignedToUserId !== userId) {
+                            // Only check if assignedToUserId exists AND is not empty AND does not match current userId
+                            else if (discountData.assignedToUserId && discountData.assignedToUserId !== "" && discountData.assignedToUserId !== userId) {
                                 discountMessageArea.textContent = 'این کد تخفیف برای شما نیست.';
                                 discountMessageArea.classList.remove('hidden', 'text-green-700');
                                 discountMessageArea.classList.add('text-red-700');
@@ -744,7 +756,7 @@
                         }
                     } catch (error) {
                         console.error("Error fetching discount code:", error);
-                        discountMessageArea.textContent = 'خطا در بررسی کد تخفیف. لطفاً دوباره تلاش کنید.';
+                        discountMessageArea.textContent = 'خطا در بررسی کد تخفیف. لطفاً اتصال اینترنت خود را بررسی کرده و دوباره تلاش کنید.';
                         discountMessageArea.classList.remove('hidden', 'text-green-700');
                         discountMessageArea.classList.add('text-red-700');
                     }
@@ -960,14 +972,17 @@
                 generateStoryBtnText.textContent = 'درحال جستجوی خاطره'; // Update button text
 
                 try {
-                    // API Key handling: For Canvas, leave it empty. Canvas runtime will inject it.
-                    // For Netlify, you would set GEMINI_API_KEY as an environment variable.
-                    const apiKey = ""; 
+                    // تغییرات: استفاده از apiKey که مستقیماً توسط محیط تزریق می شود
+                    const geminiApiKey = typeof apiKey !== 'undefined' ? apiKey : ""; 
+                    if (!geminiApiKey) {
+                        throw new Error("Gemini API Key is not configured.");
+                    }
+
                     const prompt = "یک خاطره کوتاه و جذاب (حدود 50 کلمه) از یک اغذیه فروشی قدیمی در اصفهان بنویس که حس نوستالژی و طعم‌های سنتی را منتقل کند. لحن آن دوستانه و کمی محاوره ای باشد و به غذاهای ساده و خوشمزه اشاره کند. از جملاتی که نشان دهد به شما دستور داده شده است (مانند 'بر اساس دستور شما') خودداری کنید.";
                     let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
 
                     const payload = { contents: chatHistory };
-                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiApiKey}`;
 
                     const response = await fetch(apiUrl, {
                         method: 'POST',
