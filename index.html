@@ -39,7 +39,8 @@
             scroll-behavior: smooth;
         }
         section {
-            scroll-margin-top: 80px; /* Offset for fixed header */
+            /* Adjusted scroll-margin-top to ensure content is not hidden by fixed header */
+            scroll-margin-top: 90px; /* Increased slightly for better clearance */
         }
 
         /* Background sliding images styles */
@@ -313,7 +314,8 @@
             </div>
             <!-- Navigation -->
             <nav>
-                <ul class="flex flex-wrap justify-center md:justify-end gap-4 text-lg font-semibold">
+                <!-- 1. افزایش فاصله دکمه‌های ناوبری -->
+                <ul class="flex flex-wrap justify-center md:justify-end gap-x-8 gap-y-4 text-lg font-semibold">
                     <li><a href="#home" class="hover:text-iran-old-yellow transition duration-300 rounded-md px-3 py-1" data-key="home">صفحه اصلی</a></li>
                     <li><a href="#menu" class="hover:text-iran-old-yellow transition duration-300 rounded-md px-3 py-1" data-key="menu">منو</a></li>
                     <li><a href="#about" class="hover:text-iran-old-yellow transition duration-300 rounded-md px-3 py-1" id="nav-about" data-standard="درباره ما" data-isfahani="آ یُخته راجبمون بدون">درباره ما</a></li>
@@ -388,8 +390,9 @@
         <!-- About Us Section -->
         <section id="about" class="bg-white rounded-xl shadow-traditional p-8 mb-12 text-center border-4 border-iran-old-yellow">
             <h2 class="text-3xl md:text-4xl font-bold text-iran-old-red mb-4 font-nostalgic-persian" id="about-section-title">درباره اغذیه معرفت</h2>
+            <!-- 6. اشاره به سابقه بیش از 40 سال -->
             <p class="text-lg md:text-xl leading-relaxed" id="about-main-paragraph-content">
-                اغذیه معرفت با بیش از نیم قرن تجربه، مکانی است که در آن عطر و طعم غذاهای سنتی ایرانی با سرعت و کیفیت فست فودهای امروزی ترکیب شده است. ما با استفاده از مواد اولیه تازه و دستور پخت‌های اصیل، تلاش می‌کنیم تا خاطرات خوش دوران گذشته را برای شما زنده کنیم و تجربه‌ای بی‌نظیر از غذاهای نوستالژیک را ارائه دهیم. هدف ما، ارائه بهترین کیفیت و طعم به مشتریان عزیزمان است.
+                اغذیه معرفت با بیش از **۴۰ سال** تجربه، مکانی است که در آن عطر و طعم غذاهای سنتی ایرانی با سرعت و کیفیت فست فودهای امروزی ترکیب شده است. ما با استفاده از مواد اولیه تازه و دستور پخت‌های اصیل، تلاش می‌کنیم تا خاطرات خوش دوران گذشته را برای شما زنده کنیم و تجربه‌ای بی‌نظیر از غذاهای نوستالژیک را ارائه دهیم. هدف ما، ارائه بهترین کیفیت و طعم به مشتریان عزیزمان است.
             </p>
             <div class="mt-8">
                 <button id="generate-story-btn" class="bg-iran-old-yellow text-iran-old-red px-6 py-3 rounded-lg font-bold text-lg hover:bg-iran-old-red hover:text-white transition duration-300 shadow-md flex items-center justify-center mx-auto">
@@ -412,7 +415,8 @@
                 </div>
                 <div class="text-center">
                     <h3 class="text-2xl font-semibold text-iran-old-red mb-2 font-nostalgic-persian" id="contact-phone-title" data-standard="تلفن" data-isfahani="تیلیفون">تلفن</h3>
-                    <p class="text-lg">031-12345678</p>
+                    <!-- 3. شماره تلفن فارسی شده و جدید -->
+                    <p class="text-lg">۰۳۱-۳۶۲۷۴۹۲۰</p>
                 </div>
                 <div class="text-center">
                     <h3 class="text-2xl font-semibold text-iran-old-red mb-2 font-nostalgic-persian" id="contact-hours-title" data-standard="ساعات کاری" data-isfahani="ساعِتی کاری">ساعات کاری</h3>
@@ -422,13 +426,9 @@
             <div class="mt-8 text-center">
                 <h3 class="text-2xl font-semibold text-iran-old-red mb-4 font-nostalgic-persian" data-key="social-title">ما را در شبکه‌های اجتماعی دنبال کنید:</h3>
                 <div class="flex justify-center gap-6 text-3xl">
-                    <a href="#" class="text-iran-old-red hover:text-iran-old-yellow transition duration-300" aria-label="اینستاگرام">
-                        <!-- Image of Instagram icon -->
+                    <!-- 2. حذف آیکون تلگرام و لینک اینستاگرام -->
+                    <a href="https://www.instagram.com/marefatwich/" target="_blank" class="text-iran-old-red hover:text-iran-old-yellow transition duration-300" aria-label="اینستاگرام اغذیه معرفت">
                         <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-instagram"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
-                    </a>
-                    <a href="#" class="text-iran-old-red hover:text-iran-old-yellow transition duration-300" aria-label="تلگرام">
-                        <!-- Image of Telegram icon -->
-                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-send"><path d="m22 2-7 20-4-9-9-4 20-7Z"/><path d="M15 11l4 4"/></svg>
                     </a>
                 </div>
             </div>
@@ -447,28 +447,42 @@
                 <!-- Menu items for ordering -->
                 <div class="order-item">
                     <span class="text-gray-800">ساندویچ کالباس سنتی</span>
-                    <input type="number" class="quantity-input" data-item="ساندویچ کالباس سنتی" min="0" value="0">
+                    <input type="number" class="quantity-input" data-item="ساندویچ کالباس سنتی" data-price="125000" min="0" value="0">
                 </div>
                 <div class="order-item">
                     <span class="text-gray-800">همبرگر دست‌ساز معرفت</span>
-                    <input type="number" class="quantity-input" data-item="همبرگر دست‌ساز معرفت" min="0" value="0">
+                    <input type="number" class="quantity-input" data-item="همبرگر دست‌ساز معرفت" data-price="160000" min="0" value="0">
                 </div>
                 <div class="order-item">
                     <span class="text-gray-800">سیب‌زمینی سرخ کرده زعفرانی</span>
-                    <input type="number" class="quantity-input" data-item="سیب‌زمینی سرخ کرده زعفرانی" min="0" value="0">
+                    <input type="number" class="quantity-input" data-item="سیب‌زمینی سرخ کرده زعفرانی" data-price="75000" min="0" value="0">
                 </div>
                 <div class="order-item">
                     <span class="text-gray-800">ساندویچ بندری تند</span>
-                    <input type="number" class="quantity-input" data-item="ساندویچ بندری تند" min="0" value="0">
+                    <input type="number" class="quantity-input" data-item="ساندویچ بندری تند" data-price="115000" min="0" value="0">
                 </div>
                 <div class="order-item">
                     <span class="text-gray-800">دوغ محلی و نوشیدنی‌های سنتی</span>
-                    <input type="number" class="quantity-input" data-item="دوغ محلی و نوشیدنی‌های سنتی" min="0" value="0">
+                    <input type="number" class="quantity-input" data-item="دوغ محلی و نوشیدنی‌های سنتی" data-price="35000" min="0" value="0">
                 </div>
                 <div class="order-item">
                     <span class="text-gray-800">سالاد شیرازی اصیل</span>
-                    <input type="number" class="quantity-input" data-item="سالاد شیرازی اصیل" min="0" value="0">
+                    <input type="number" class="quantity-input" data-item="سالاد شیرازی اصیل" data-price="80000" min="0" value="0">
                 </div>
+            </div>
+
+            <!-- 7. بخش کد تخفیف -->
+            <div class="mb-4 p-4 border-2 border-iran-old-yellow rounded-lg bg-stone-50">
+                <label for="discount-code" class="block text-gray-700 text-sm font-bold mb-2">کد تخفیف:</label>
+                <div class="flex gap-2">
+                    <input type="text" id="discount-code" class="text-input flex-grow" placeholder="کد تخفیف را وارد کنید">
+                    <button id="apply-discount-btn" class="bg-iran-old-yellow text-iran-old-red px-4 py-2 rounded-lg font-bold hover:bg-iran-old-red hover:text-white transition duration-300 shadow-md">اعمال</button>
+                </div>
+                <div id="discount-message-area" class="mt-2 text-sm font-semibold text-center hidden"></div>
+            </div>
+
+            <div class="mb-6 text-xl font-bold text-iran-old-red text-center">
+                مبلغ کل: <span id="total-order-price">۰</span> تومان
             </div>
 
             <div class="mb-4">
@@ -476,8 +490,8 @@
                 <input type="text" id="customer-name" class="text-input" placeholder="نام و نام خانوادگی">
             </div>
             <div class="mb-6">
-                <label for="customer-phone" class="block text-gray-700 text-sm font-bold mb-2">شماره تلفن (مثال: 09123456789):</label>
-                <input type="tel" id="customer-phone" class="text-input" placeholder="09xxxxxxxxx" pattern="09[0-9]{9}" required>
+                <label for="customer-phone" class="block text-gray-700 text-sm font-bold mb-2">شماره تلفن (مثال: ۰۹۱۲۳۴۵۶۷۸۹):</label>
+                <input type="tel" id="customer-phone" class="text-input" placeholder="۰۹xxxxxxxxx" pattern="09[0-9]{9}" required>
             </div>
 
             <button id="place-order-btn" class="w-full bg-iran-old-red text-white py-3 rounded-lg font-bold text-lg hover:bg-iran-old-yellow hover:text-iran-old-red transition duration-300 shadow-md">ثبت سفارش</button>
@@ -494,18 +508,18 @@
             <p class="text-gray-700 mb-6 text-center">برای کمک به آنی که شب را تا صبح بی غذا می گذراند</p>
 
             <div class="flex flex-wrap justify-center gap-4 mb-6">
-                <button class="amount-option" data-amount="35000">35,000 تومان</button>
-                <button class="amount-option" data-amount="55000">55,000 تومان</button>
-                <button class="amount-option" data-amount="100000">100,000 تومان</button>
-                <button class="amount-option" data-amount="180000">180,000 تومان</button>
-                <button class="amount-option" data-amount="350000">350,000 تومان</button>
-                <button class="amount-option" data-amount="500000">500,000 تومان</button>
-                <button class="amount-option" data-amount="1000000">1,000,000 تومان</button>
+                <button class="amount-option" data-amount="35000">۳۵,۰۰۰ تومان</button>
+                <button class="amount-option" data-amount="55000">۵۵,۰۰۰ تومان</button>
+                <button class="amount-option" data-amount="100000">۱۰۰,۰۰۰ تومان</button>
+                <button class="amount-option" data-amount="180000">۱۸۰,۰۰۰ تومان</button>
+                <button class="amount-option" data-amount="350000">۳۵۰,۰۰۰ تومان</button>
+                <button class="amount-option" data-amount="500000">۵۰۰,۰۰۰ تومان</button>
+                <button class="amount-option" data-amount="1000000">۱,۰۰۰,۰۰۰ تومان</button>
             </div>
 
             <div class="mb-6">
                 <label for="custom-amount" class="block text-gray-700 text-sm font-bold mb-2">مبلغ دلخواه (تومان):</label>
-                <input type="number" id="custom-amount" class="custom-amount-input" placeholder="مثال: 150000" min="1000">
+                <input type="number" id="custom-amount" class="custom-amount-input" placeholder="مثال: ۱۵۰,۰۰۰" min="1000">
             </div>
 
             <button id="pay-donation-btn" class="w-full bg-iran-old-red text-white py-3 rounded-lg font-bold text-lg hover:bg-iran-old-yellow hover:text-iran-old-red transition duration-300 shadow-md">پرداخت</button>
@@ -519,11 +533,61 @@
         <div class="container mx-auto px-4 text-center text-sm">
             <p>&copy; 2025 اغذیه معرفت. تمامی حقوق محفوظ است.</p>
             <p class="mt-2">با عشق از اصفهان، ایران</p>
+            <!-- 5. طراحی شده توسط آروین وکیلی -->
+            <p class="mt-2 text-xs">Designed by Arvin Vakili</p>
         </div>
     </footer>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
+    <script type="module">
+        // Firebase Imports (Added)
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, updateDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global Firebase variables (Will be provided by Canvas/Netlify runtime)
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        let app;
+        let db;
+        let auth;
+        let userId = 'anonymous'; // Default to anonymous until authenticated
+
+        // Initialize Firebase and authenticate
+        async function initializeFirebase() {
+            try {
+                app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+
+                // Sign in with custom token if available, otherwise anonymously
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } else {
+                    await signInAnonymously(auth);
+                }
+
+                // Listen for auth state changes to get the user ID
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        userId = user.uid;
+                        console.log("Firebase authenticated. User ID:", userId);
+                    } else {
+                        console.log("Firebase not authenticated. Using anonymous ID.");
+                        userId = crypto.randomUUID(); // Generate a random ID for anonymous users
+                    }
+                });
+
+            } catch (error) {
+                console.error("Error initializing Firebase:", error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Initialize Firebase first
+            await initializeFirebase();
+
             // DOM Elements
             const dialectToggleBtn = document.getElementById('dialect-toggle-btn');
             const headerTitle = document.getElementById('header-title');
@@ -561,7 +625,13 @@
             const placeOrderBtn = document.getElementById('place-order-btn');
             const orderMessage = document.getElementById('order-message');
 
-            // Gemini API elements (Re-added)
+            // Elements for discount code
+            const discountCodeInput = document.getElementById('discount-code');
+            const applyDiscountBtn = document.getElementById('apply-discount-btn');
+            const discountMessageArea = document.getElementById('discount-message-area');
+            const totalOrderPriceSpan = document.getElementById('total-order-price');
+
+            // Gemini API elements
             const generateStoryBtn = document.getElementById('generate-story-btn');
             const generateStoryBtnText = document.getElementById('generate-story-btn-text');
             const storyLoadingIndicator = document.getElementById('story-loading-indicator');
@@ -570,6 +640,19 @@
 
             let selectedAmount = 0; // To store the selected donation amount
             let isIsfahaniMode = false; // State for dialect toggle
+            let currentOrderTotal = 0; // Current calculated total for order
+            let discountApplied = false; // Flag to check if discount is applied
+            let appliedDiscountCode = null; // Store the code that was successfully applied
+
+            // Define menu item prices
+            const menuPrices = {
+                "ساندویچ کالباس سنتی": 125000,
+                "همبرگر دست‌ساز معرفت": 160000,
+                "سیب‌زمینی سرخ کرده زعفرانی": 75000,
+                "ساندویچ بندری تند": 115000,
+                "دوغ محلی و نوشیدنی‌های سنتی": 35000,
+                "سالاد شیرازی اصیل": 80000
+            };
 
             // Function to convert Western digits to Persian digits
             function convertToPersianDigits(num) {
@@ -579,7 +662,99 @@
 
             // Function to format numbers with commas and Persian digits
             function formatPrice(price) {
-                return convertToPersianDigits(price.toLocaleString('en-US'));
+                return convertToPersianDigits(Math.round(price).toLocaleString('fa-IR')); // Use 'fa-IR' for Persian locale formatting, round to avoid decimals from discounts
+            }
+
+            // Function to calculate and update order total
+            async function calculateOrderTotal() {
+                let subtotal = 0;
+                quantityInputs.forEach(input => {
+                    const itemName = input.dataset.item;
+                    const quantity = parseInt(input.value) || 0;
+                    if (menuPrices[itemName]) {
+                        subtotal += menuPrices[itemName] * quantity;
+                    }
+                });
+
+                let finalTotal = subtotal;
+                discountApplied = false; // Reset discount flag
+                appliedDiscountCode = null; // Reset applied code
+
+                const enteredCode = discountCodeInput.value.trim().toUpperCase();
+
+                if (enteredCode) {
+                    if (!db) {
+                        console.error("Firestore is not initialized.");
+                        discountMessageArea.textContent = 'خطا: سرویس تخفیف در دسترس نیست.';
+                        discountMessageArea.classList.remove('hidden', 'text-green-700');
+                        discountMessageArea.classList.add('text-red-700');
+                        currentOrderTotal = finalTotal;
+                        totalOrderPriceSpan.textContent = formatPrice(currentOrderTotal);
+                        return;
+                    }
+
+                    try {
+                        // Query discount codes from Firestore
+                        const q = query(collection(db, `artifacts/${appId}/public/data/discountCodes`), where("code", "==", enteredCode));
+                        const querySnapshot = await getDocs(q);
+
+                        if (!querySnapshot.empty) {
+                            const discountDoc = querySnapshot.docs[0];
+                            const discountData = discountDoc.data();
+                            const discountRef = doc(db, `artifacts/${appId}/public/data/discountCodes`, discountDoc.id);
+
+                            // Check expiry date
+                            const now = new Date();
+                            const expiryDate = discountData.expiryDate ? new Date(discountData.expiryDate) : null; // Assuming expiryDate is ISO string or similar
+
+                            if (expiryDate && now > expiryDate) {
+                                discountMessageArea.textContent = 'کد تخفیف منقضی شده است.';
+                                discountMessageArea.classList.remove('hidden', 'text-green-700');
+                                discountMessageArea.classList.add('text-red-700');
+                            }
+                            // Check usage limit
+                            else if (discountData.usageCount >= discountData.usageLimit) {
+                                discountMessageArea.textContent = 'تعداد دفعات استفاده از این کد تخفیف به پایان رسیده است.';
+                                discountMessageArea.classList.remove('hidden', 'text-green-700');
+                                discountMessageArea.classList.add('text-red-700');
+                            }
+                            // Check if code is active for a specific user (if applicable)
+                            else if (discountData.assignedToUserId && discountData.assignedToUserId !== userId) {
+                                discountMessageArea.textContent = 'این کد تخفیف برای شما نیست.';
+                                discountMessageArea.classList.remove('hidden', 'text-green-700');
+                                discountMessageArea.classList.add('text-red-700');
+                            }
+                            else {
+                                // Apply discount
+                                const discountPercentage = discountData.percentage / 100;
+                                finalTotal = subtotal * (1 - discountPercentage);
+                                discountMessageArea.textContent = `کد تخفیف "${enteredCode}" اعمال شد! ${convertToPersianDigits(discountData.percentage)}% تخفیف.`;
+                                discountMessageArea.classList.remove('hidden', 'text-red-700');
+                                discountMessageArea.classList.add('text-green-700');
+                                discountApplied = true;
+                                appliedDiscountCode = {
+                                    ref: discountRef,
+                                    data: discountData
+                                };
+                            }
+                        } else {
+                            discountMessageArea.textContent = 'کد تخفیف نامعتبر است.';
+                            discountMessageArea.classList.remove('hidden', 'text-green-700');
+                            discountMessageArea.classList.add('text-red-700');
+                        }
+                    } catch (error) {
+                        console.error("Error fetching discount code:", error);
+                        discountMessageArea.textContent = 'خطا در بررسی کد تخفیف. لطفاً دوباره تلاش کنید.';
+                        discountMessageArea.classList.remove('hidden', 'text-green-700');
+                        discountMessageArea.classList.add('text-red-700');
+                    }
+                } else { // No code entered
+                    discountMessageArea.textContent = '';
+                    discountMessageArea.classList.add('hidden');
+                }
+
+                currentOrderTotal = finalTotal;
+                totalOrderPriceSpan.textContent = formatPrice(currentOrderTotal);
             }
 
             // Dialect Toggle Logic
@@ -590,7 +765,7 @@
                     { elem: navContact, standard: navContact.dataset.standard, isfahani: navContact.dataset.isfahani },
                     { elem: heroWelcomeTitle, standard: "به اغذیه معرفت خوش آمدید!", isfahani: "اغذیه معرفت، خوش اومِدین!" },
                     { elem: aboutSectionTitle, standard: "درباره اغذیه معرفت", isfahani: "آ یُخته راجب اغذیه معرفت بدونین" },
-                    { elem: aboutMainParagraphContent, standard: "اغذیه معرفت با بیش از نیم قرن تجربه، مکانی است که در آن عطر و طعم غذاهای سنتی ایرانی با سرعت و کیفیت فست فودهای امروزی ترکیب شده است. ما با استفاده از مواد اولیه تازه و دستور پخت‌های اصیل، تلاش می‌کنیم تا خاطرات خوش دوران گذشته را برای شما زنده کنیم و تجربه‌ای بی‌نظیر از غذاهای نوستالژیک را ارائه دهیم. هدف ما، ارائه بهترین کیفیت و طعم به مشتریان عزیزمان است.", isfahani: "اغذیه معرفت، با نیم قرن سابقه، یه جاست که عطر و بوی غذاهای قدیمیمون با سرعت فست فودای الان قاطی شده. ما با مواد تازه و دستور پختای ناب، سعی می‌کنیم خاطرات خوب گذشته رو واستون زنده کنیم و یه تجربه توپ از غذاهای قدیمی بهتون بدیم. هدفمونم اینه که بهترین کیفیت و طعمو به مشتریای گلمون بدیم." },
+                    { elem: aboutMainParagraphContent, standard: "اغذیه معرفت با بیش از ۴۰ سال تجربه، مکانی است که در آن عطر و طعم غذاهای سنتی ایرانی با سرعت و کیفیت فست فودهای امروزی ترکیب شده است. ما با استفاده از مواد اولیه تازه و دستور پخت‌های اصیل، تلاش می‌کنیم تا خاطرات خوش دوران گذشته را برای شما زنده کنیم و تجربه‌ای بی‌نظیر از غذاهای نوستالژیک را ارائه دهیم. هدف ما، ارائه بهترین کیفیت و طعم به مشتریان عزیزمان است.", isfahani: "اغذیه معرفت، با بیش از ۴۰ سال سابقه، یه جاست که عطر و بوی غذاهای قدیمیمون با سرعت فست فودای الان قاطی شده. ما با مواد تازه و دستور پختای ناب، سعی می‌کنیم خاطرات خوب گذشته رو واستون زنده کنیم و یه تجربه توپ از غذاهای قدیمی بهتون بدیم. هدفمونم اینه که بهترین کیفیت و طعمو به مشتریای گلمون بدیم." },
                     { elem: contactSectionTitle, standard: contactSectionTitle.dataset.standard, isfahani: contactSectionTitle.dataset.isfahani },
                     { elem: contactAddressTitle, standard: contactAddressTitle.dataset.standard, isfahani: contactAddressTitle.dataset.isfahani },
                     { elem: contactAddressText, standard: contactAddressText.dataset.standard, isfahani: contactAddressText.dataset.isfahani },
@@ -675,6 +850,12 @@
                 e.preventDefault();
                 orderModalOverlay.classList.add('show');
                 document.body.style.overflow = 'hidden'; // Prevent scrolling background
+                // Reset order state on open
+                quantityInputs.forEach(input => input.value = '0');
+                discountCodeInput.value = '';
+                calculateOrderTotal(); // Calculate initial total (0)
+                orderMessage.textContent = '';
+                orderMessage.classList.add('hidden');
             });
 
             closeOrderModalBtn.addEventListener('click', () => {
@@ -684,9 +865,29 @@
                 customerNameInput.value = ''; // Clear inputs
                 customerPhoneInput.value = '';
                 quantityInputs.forEach(input => input.value = '0'); // Reset quantities
+                discountCodeInput.value = ''; // Clear discount code
+                calculateOrderTotal(); // Reset total
             });
 
-            placeOrderBtn.addEventListener('click', () => {
+            // Event listeners for quantity changes to update total
+            quantityInputs.forEach(input => {
+                input.addEventListener('input', calculateOrderTotal);
+            });
+
+            // Event listener for discount code application
+            applyDiscountBtn.addEventListener('click', calculateOrderTotal);
+            discountCodeInput.addEventListener('input', () => {
+                // Clear discount message if user starts typing a new code
+                discountMessageArea.textContent = '';
+                discountMessageArea.classList.add('hidden');
+                // Recalculate total if discount code is cleared
+                if (discountCodeInput.value.trim() === '') {
+                    calculateOrderTotal();
+                }
+            });
+
+
+            placeOrderBtn.addEventListener('click', async () => { // Made async to await Firebase update
                 const customerName = customerNameInput.value.trim();
                 const customerPhone = customerPhoneInput.value.trim();
                 const selectedItems = [];
@@ -696,7 +897,8 @@
                     if (quantity > 0) {
                         selectedItems.push({
                             item: input.dataset.item,
-                            quantity: quantity
+                            quantity: quantity,
+                            price: menuPrices[input.dataset.item] // Include price for clarity
                         });
                     }
                 });
@@ -706,6 +908,24 @@
                     selectedItems.forEach(item => {
                         orderDetails += `\n- ${item.item}: ${convertToPersianDigits(item.quantity)} عدد`;
                     });
+                    orderDetails += `\nمبلغ کل: ${formatPrice(currentOrderTotal)} تومان`;
+                    if (discountApplied) {
+                        orderDetails += ` (با اعمال تخفیف)`;
+                    }
+
+                    // Update discount code usage count in Firestore (if a discount was applied)
+                    if (appliedDiscountCode && db) {
+                        try {
+                            const newUsageCount = (appliedDiscountCode.data.usageCount || 0) + 1;
+                            await updateDoc(appliedDiscountCode.ref, {
+                                usageCount: newUsageCount
+                            });
+                            console.log(`Discount code ${appliedDiscountCode.data.code} usage count updated to ${newUsageCount}`);
+                        } catch (error) {
+                            console.error("Error updating discount code usage:", error);
+                            // Still proceed with order, but log the error
+                        }
+                    }
 
                     // In a real application, this would send data to a backend (e.g., via fetch to a server or Firebase)
                     // For now, we just simulate success.
@@ -721,6 +941,9 @@
                         customerNameInput.value = '';
                         customerPhoneInput.value = '';
                         quantityInputs.forEach(input => input.value = '0');
+                        discountCodeInput.value = ''; // Clear discount code
+                        calculateOrderTotal(); // Reset total
+                        appliedDiscountCode = null; // Clear applied code
                     }, 3000);
                 } else {
                     orderMessage.textContent = 'لطفاً نام، شماره تلفن و حداقل یک مورد را برای سفارش انتخاب کنید.';
@@ -729,7 +952,7 @@
                 }
             });
 
-            // Gemini API Integration for Story Generation (Re-added and fixed)
+            // Gemini API Integration for Story Generation
             generateStoryBtn.addEventListener('click', async () => {
                 storyLoadingIndicator.classList.remove('hidden');
                 generatedStoryOutput.classList.add('hidden'); // Hide previous output
@@ -738,8 +961,8 @@
 
                 try {
                     // API Key handling: For Canvas, leave it empty. Canvas runtime will inject it.
-                    // For Netlify, you would set REACT_APP_GEMINI_API_KEY as an environment variable.
-                    const apiKey = ""; // این مقدار به صورت خودکار توسط محیط Canvas فراهم می‌شود.
+                    // For Netlify, you would set GEMINI_API_KEY as an environment variable.
+                    const apiKey = ""; 
                     const prompt = "یک خاطره کوتاه و جذاب (حدود 50 کلمه) از یک اغذیه فروشی قدیمی در اصفهان بنویس که حس نوستالژی و طعم‌های سنتی را منتقل کند. لحن آن دوستانه و کمی محاوره ای باشد و به غذاهای ساده و خوشمزه اشاره کند. از جملاتی که نشان دهد به شما دستور داده شده است (مانند 'بر اساس دستور شما') خودداری کنید.";
                     let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
 
@@ -777,6 +1000,9 @@
                     generateStoryBtnText.textContent = '✨ خاطره‌ای از معرفت ✨'; // Reset button text
                 }
             });
+
+            // Initial calculation of order total when modal opens
+            calculateOrderTotal();
         });
     </script>
 </body>
