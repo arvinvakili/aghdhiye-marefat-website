@@ -704,4 +704,235 @@
                     { elem: navContact, standard: navContact.dataset.standard, isfahani: navContact.dataset.isfahani },
                     { elem: heroWelcomeTitle, standard: "به اغذیه معرفت خوش آمدید!", isfahani: "اغذیه معرفت، خوش اومِدین!" },
                     { elem: aboutSectionTitle, standard: "درباره اغذیه معرفت", isfahani: "آ یُخته راجب اغذیه معرفت بدونین" },
-                    { elem: aboutMainParagraphContent, standard: "اغذیه معرفت با بیش از ۴۰ سال تجربه، مکانی است که در آن عطر و طعم غذاهای سنتی ایرانی با سرعت و کیفیت فست فودهای امروزی ترکیب شده است. ما با استفاده از مواد اولیه تازه و دستور پخت‌های اصیل، تلاش می‌کنیم تا خاطرات خوش دوران گذشته را برای شما زنده کنیم و تجربه‌ای بی‌نظیر از غذاهای نوستالژیک را ارائه دهیم. هدف ما، ارائه بهترین کیفیت و طعم به مشتریان عزیزمان است.", isfahani: "اغذیه معرفت، با بیش از ۴۰ سال سابقه، یه جاست که عطر و بوی غذاهای قدیمیمون با سرعت فست فودای الان قاطی شده. ما با مواد تازه و دستور پختای ناب، سعی می‌کنیم خاطرات خوب گذشته رو واستون زنده کنیم و یه تجربه توپ از غذاهای قدیمی بهتون بدیم. هدفمونم اینه که بهترین کیفیت و طعمو
+                    { elem: aboutMainParagraphContent, standard: "اغذیه معرفت با بیش از ۴۰ سال تجربه، مکانی است که در آن عطر و طعم غذاهای سنتی ایرانی با سرعت و کیفیت فست فودهای امروزی ترکیب شده است. ما با استفاده از مواد اولیه تازه و دستور پخت‌های اصیل، تلاش می‌کنیم تا خاطرات خوش دوران گذشته را برای شما زنده کنیم و تجربه‌ای بی‌نظیر از غذاهای نوستالژیک را ارائه دهیم. هدف ما، ارائه بهترین کیفیت و طعم به مشتریان عزیزمان است.", isfahani: "اغذیه معرفت، با بیش از ۴۰ سال سابقه، یه جاست که عطر و بوی غذاهای قدیمیمون با سرعت فست فودای الان قاطی شده. ما با مواد تازه و دستور پختای ناب، سعی می‌کنیم خاطرات خوب گذشته رو واستون زنده کنیم و یه تجربه توپ از غذاهای قدیمی بهتون بدیم. هدفمونم اینه که بهترین کیفیت و طعمو به مشتریای گلمون بدیم." },
+                    { elem: contactSectionTitle, standard: contactSectionTitle.dataset.standard, isfahani: contactSectionTitle.dataset.isfahani },
+                    { elem: contactAddressTitle, standard: contactAddressTitle.dataset.standard, isfahani: contactAddressTitle.dataset.isfahani },
+                    { elem: contactAddressText, standard: contactAddressText.dataset.standard, isfahani: contactAddressText.dataset.isfahani },
+                    { elem: contactPhoneTitle, standard: contactPhoneTitle.dataset.standard, isfahani: contactPhoneTitle.dataset.isfahani },
+                    { elem: contactHoursTitle, standard: contactHoursTitle.dataset.standard, isfahani: contactHoursTitle.dataset.isfahani },
+                    { elem: contactHoursText, standard: contactHoursText.dataset.standard, isfahani: contactHoursText.dataset.isfahani },
+                    { elem: document.querySelector('[data-key="menu-title"]'), standard: "منوی ما", isfahani: "لیست غذاهامون" },
+                    { elem: document.querySelector('#menu-item-1-desc'), standard: "کالباس ممتاز، خیارشور، گوجه، کاهو و سس مخصوص معرفت.", isfahani: "کالباس خوب، خیارشور، گوجه، کاهو و سس مخصوص معرفت." },
+                    { elem: document.querySelector('#menu-item-2-title'), standard: "همبرگر دست‌ساز معرفت", isfahani: "همبرگر خُمپز معرفت" },
+                    { elem: dialectToggleBtn, standard: "حالت اصفهانی", isfahani: "حالت اصفهونی" }
+                ];
+
+                elements.forEach(({ elem, standard, isfahani }) => {
+                    if (elem) {
+                        elem.textContent = isIsfahaniMode ? isfahani : standard;
+                    }
+                });
+            };
+
+            dialectToggleBtn.addEventListener('click', () => {
+                isIsfahaniMode = !isIsfahaniMode;
+                updateTextContent();
+            });
+
+            // Initial text update
+            updateTextContent();
+
+            // Donation Modal Logic
+            openDonationModalBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                donationModalOverlay.classList.add('show');
+                document.body.style.overflow = 'hidden'; // Prevent scrolling background
+            });
+
+            closeDonationModalBtn.addEventListener('click', () => {
+                donationModalOverlay.classList.remove('show');
+                document.body.style.overflow = ''; // Restore scrolling
+                paymentMessage.textContent = ''; // Clear message
+                customAmountInput.value = ''; // Clear custom amount
+                amountOptions.forEach(btn => btn.classList.remove('selected')); // Deselect all
+                selectedAmount = 0;
+            });
+
+            amountOptions.forEach(button => {
+                button.addEventListener('click', () => {
+                    amountOptions.forEach(btn => btn.classList.remove('selected'));
+                    button.classList.add('selected');
+                    selectedAmount = parseInt(button.dataset.amount);
+                    customAmountInput.value = ''; // Clear custom input if a preset is selected
+                });
+            });
+
+            customAmountInput.addEventListener('input', () => {
+                amountOptions.forEach(btn => btn.classList.remove('selected')); // Deselect presets
+                selectedAmount = parseInt(customAmountInput.value) || 0;
+            });
+
+            payDonationBtn.addEventListener('click', () => {
+                if (selectedAmount > 0) {
+                    // In a real application, this would integrate with a payment gateway.
+                    // For now, we just show a success message.
+                    paymentMessage.textContent = `مبلغ ${formatPrice(selectedAmount)} تومان با موفقیت پرداخت شد. از کمک شما سپاسگزاریم!`;
+                    paymentMessage.classList.remove('hidden', 'text-red-700');
+                    paymentMessage.classList.add('text-green-700');
+                    setTimeout(() => {
+                        donationModalOverlay.classList.remove('show');
+                        document.body.style.overflow = '';
+                        paymentMessage.textContent = '';
+                        customAmountInput.value = '';
+                        amountOptions.forEach(btn => btn.classList.remove('selected'));
+                        selectedAmount = 0;
+                    }, 3000); // Close modal and clear message after 3 seconds
+                } else {
+                    paymentMessage.textContent = 'لطفاً مبلغی را برای کمک انتخاب کنید یا وارد نمایید.';
+                    paymentMessage.classList.remove('hidden', 'text-green-700');
+                    paymentMessage.classList.add('text-red-700');
+                }
+            });
+
+            // Order Modal Logic
+            openOrderModalBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                orderModalOverlay.classList.add('show');
+                document.body.style.overflow = 'hidden'; // Prevent scrolling background
+                // Reset order state on open
+                quantityInputs.forEach(input => input.value = '0');
+                discountCodeInput.value = '';
+                calculateOrderTotal(); // Calculate initial total (0)
+                orderMessage.textContent = '';
+                orderMessage.classList.add('hidden');
+            });
+
+            closeOrderModalBtn.addEventListener('click', () => {
+                orderModalOverlay.classList.remove('show');
+                document.body.style.overflow = ''; // Restore scrolling
+                orderMessage.textContent = ''; // Clear message
+                customerNameInput.value = ''; // Clear inputs
+                customerPhoneInput.value = '';
+                quantityInputs.forEach(input => input.value = '0'); // Reset quantities
+                discountCodeInput.value = ''; // Clear discount code
+                calculateOrderTotal(); // Reset total
+            });
+
+            // Event listeners for quantity changes to update total
+            quantityInputs.forEach(input => {
+                input.addEventListener('input', calculateOrderTotal);
+            });
+
+            // Event listener for discount code application
+            applyDiscountBtn.addEventListener('click', calculateOrderTotal);
+            discountCodeInput.addEventListener('input', () => {
+                // Clear discount message if user starts typing a new code
+                discountMessageArea.textContent = '';
+                discountMessageArea.classList.add('hidden');
+                // Recalculate total if discount code is cleared
+                if (discountCodeInput.value.trim() === '') {
+                    calculateOrderTotal();
+                }
+            });
+
+
+            placeOrderBtn.addEventListener('click', async () => {
+                const customerName = customerNameInput.value.trim();
+                const customerPhone = customerPhoneInput.value.trim();
+                const selectedItems = [];
+
+                quantityInputs.forEach(input => {
+                    const quantity = parseInt(input.value);
+                    if (quantity > 0) {
+                        selectedItems.push({
+                            item: input.dataset.item,
+                            quantity: quantity,
+                            price: menuPrices[input.dataset.item] // Include price for clarity
+                        });
+                    }
+                });
+
+                if (customerName && customerPhone && selectedItems.length > 0) {
+                    let orderDetails = `سفارش جدید:\nنام: ${customerName}\nتلفن: ${customerPhone}\nاقلام سفارش:`;
+                    selectedItems.forEach(item => {
+                        orderDetails += `\n- ${item.item}: ${convertToPersianDigits(item.quantity)} عدد`;
+                    });
+                    orderDetails += `\nمبلغ کل: ${formatPrice(currentOrderTotal)} تومان`;
+                    if (discountApplied) {
+                        orderDetails += ` (با اعمال تخفیف)`;
+                    }
+
+                    // In a real application, this would send data to a backend (e.g., via fetch to a server or Firebase)
+                    // For now, we just simulate success.
+                    console.log(orderDetails); // Log to console for demonstration
+
+                    orderMessage.textContent = 'سفارش شما با موفقیت ثبت شد! به زودی با شما تماس خواهیم گرفت.';
+                    orderMessage.classList.remove('hidden', 'text-red-700');
+                    orderMessage.classList.add('text-green-700');
+                    setTimeout(() => {
+                        orderModalOverlay.classList.remove('show');
+                        document.body.style.overflow = '';
+                        orderMessage.textContent = '';
+                        customerNameInput.value = '';
+                        customerPhoneInput.value = '';
+                        quantityInputs.forEach(input => input.value = '0');
+                        discountCodeInput.value = ''; // Clear discount code
+                        calculateOrderTotal(); // Reset total
+                        appliedDiscountCode = null; // Clear applied code
+                    }, 3000);
+                } else {
+                    orderMessage.textContent = 'لطفاً نام، شماره تلفن و حداقل یک مورد را برای سفارش انتخاب کنید.';
+                    orderMessage.classList.remove('hidden', 'text-green-700');
+                    orderMessage.classList.add('text-red-700');
+                }
+            });
+
+            // Gemini API Integration for Story Generation
+            generateStoryBtn.addEventListener('click', async () => {
+                storyLoadingIndicator.classList.remove('hidden');
+                generatedStoryOutput.classList.add('hidden'); // Hide previous output
+                generatedStoryOutput.textContent = ''; // Clear previous text
+                generateStoryBtnText.textContent = 'درحال جستجوی خاطره'; // Update button text
+
+                try {
+                    // تغییرات: استفاده از apiKey که مستقیماً توسط محیط تزریق می شود
+                    const geminiApiKey = typeof apiKey !== 'undefined' ? apiKey : "";
+                    if (!geminiApiKey) {
+                        throw new Error("Gemini API Key is not configured.");
+                    }
+
+                    const prompt = "یک خاطره کوتاه و جذاب (حدود 50 کلمه) از یک اغذیه فروشی قدیمی در اصفهان بنویس که حس نوستالژی و طعم‌های سنتی را منتقل کند. لحن آن دوستانه و کمی محاوره ای باشد و به غذاهای ساده و خوشمزه اشاره کند. از جملاتی که نشان دهد به شما دستور داده شده است (مانند 'بر اساس دستور شما') خودداری کنید.";
+                    let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+
+                    const payload = { contents: chatHistory };
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiApiKey}`;
+
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(`API call failed with status ${response.status}: ${errorData.error.message || 'Unknown error'}`);
+                    }
+
+                    const result = await response.json();
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        const storyText = result.candidates[0].content.parts[0].text;
+                        generatedStoryOutput.textContent = storyText;
+                        generatedStoryOutput.classList.remove('hidden');
+                    } else {
+                        generatedStoryOutput.textContent = 'متاسفم، نتوانستم خاطره‌ای پیدا کنم. لطفاً دوباره تلاش کنید.';
+                        generatedStoryOutput.classList.remove('hidden');
+                    }
+                } catch (error) {
+                    console.error("Error generating story:", error);
+                    generatedStoryOutput.textContent = `خطا در دریافت خاطره: ${error.message}. لطفاً اتصال اینترنت خود را بررسی کرده و دوباره تلاش کنید.`;
+                    generatedStoryOutput.classList.remove('hidden');
+                } finally {
+                    storyLoadingIndicator.classList.add('hidden');
+                    generateStoryBtnText.textContent = '✨ خاطره‌ای از معرفت ✨'; // Reset button text
+                }
+            });
+
+            // Initial calculation of order total when modal opens
+            calculateOrderTotal();
+        });
+        console.log("Script fully loaded and executed.");
+    </script>
+</body>
+</html>
