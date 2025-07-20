@@ -539,64 +539,13 @@
     </footer>
 
     <script type="module">
-        // Firebase Imports (Added)
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, updateDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        // Global Firebase variables (Will be provided by Canvas/Netlify runtime)
-        // این بخش برای Netlify تغییر کرده است
-        // تغییرات: استفاده از __firebase_config و __app_id که مستقیماً توسط محیط تزریق می شوند
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id'; // استفاده از __app_id
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-
-
-        let app;
-        let db;
-        let auth;
-        let userId = 'anonymous'; // Default to anonymous until authenticated
-
-        // Initialize Firebase and authenticate
-        async function initializeFirebase() {
-            try {
-                // فقط اگر firebaseConfig دارای apiKey باشد Firebase را مقداردهی اولیه می کنیم
-                // این بررسی اطمینان می دهد که اگر در محیط Canvas/Netlify متغیرها تزریق نشدند، خطا ندهد.
-                if (firebaseConfig.apiKey) {
-                    app = initializeApp(firebaseConfig);
-                    db = getFirestore(app);
-                    auth = getAuth(app);
-
-                    // Sign in with custom token if available, otherwise anonymously
-                    if (initialAuthToken) {
-                        await signInWithCustomToken(auth, initialAuthToken);
-                    } else {
-                        await signInAnonymously(auth);
-                    }
-
-                    // Listen for auth state changes to get the user ID
-                    onAuthStateChanged(auth, (user) => {
-                        if (user) {
-                            userId = user.uid;
-                            console.log("Firebase authenticated. User ID:", userId);
-                        } else {
-                            console.log("Firebase not authenticated. Using anonymous ID.");
-                            userId = crypto.randomUUID(); // Generate a random ID for anonymous users
-                        }
-                    });
-                } else {
-                    console.warn("Firebase configuration is missing. Discount service will not be available.");
-                }
-
-            } catch (error) {
-                console.error("Error initializing Firebase:", error);
-            }
-        }
+        // ====================================================================================
+        // !!! این خطی است که شما به دنبال آن هستید و اکنون با URL صحیح به‌روز شده است !!!
+        // ====================================================================================
+        const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwembXbCrgv6_TdiBKdylvpb3jJpujvEigNWD0Db75UZXDujpnGmvod2tj3aSceCBRo0w/exec';
+        // ====================================================================================
 
         document.addEventListener('DOMContentLoaded', async () => {
-            // Initialize Firebase first
-            await initializeFirebase();
-
             // DOM Elements
             const dialectToggleBtn = document.getElementById('dialect-toggle-btn');
             const headerTitle = document.getElementById('header-title');
@@ -674,6 +623,25 @@
                 return convertToPersianDigits(Math.round(price).toLocaleString('fa-IR')); // Use 'fa-IR' for Persian locale formatting, round to avoid decimals from discounts
             }
 
+            // Function to fetch discount codes from Google Apps Script
+            async function fetchDiscountCodes() {
+                try {
+                    // Check if the URL is still the placeholder
+                    // این بررسی دیگر لازم نیست چون URL مستقیماً در کد قرار داده شده است.
+                    // اما اگر می‌خواهید آن را نگه دارید، باید مقدار GOOGLE_APPS_SCRIPT_URL را با YOUR_GOOGLE_APPS_SCRIPT_DEPLOYMENT_URL_HERE مقایسه کنید.
+                    // در حال حاضر، این خط به طور مستقیم به URL واقعی اشاره می‌کند.
+                    const response = await fetch(GOOGLE_APPS_SCRIPT_URL);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const data = await response.json();
+                    return data;
+                } catch (error) {
+                    console.error("Error fetching discount codes:", error);
+                    return []; // Return empty array on error
+                }
+            }
+
             // Function to calculate and update order total
             async function calculateOrderTotal() {
                 let subtotal = 0;
@@ -692,71 +660,64 @@
                 const enteredCode = discountCodeInput.value.trim().toUpperCase();
 
                 if (enteredCode) {
-                    if (!db) { // Check if Firestore is initialized
-                        console.error("Firestore is not initialized. Discount service is unavailable.");
-                        discountMessageArea.textContent = 'خطا: سرویس تخفیف در دسترس نیست.';
-                        discountMessageArea.classList.remove('hidden', 'text-green-700');
-                        discountMessageArea.classList.add('text-red-700');
-                        currentOrderTotal = finalTotal;
-                        totalOrderPriceSpan.textContent = formatPrice(currentOrderTotal);
-                        return;
-                    }
+                    // این بررسی دیگر لازم نیست چون URL مستقیماً در کد قرار داده شده است.
+                    // if (GOOGLE_APPS_SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_DEPLOYMENT_URL_HERE') {
+                    //     discountMessageArea.textContent = 'خطا: آدرس Google Apps Script تنظیم نشده است.';
+                    //     discountMessageArea.classList.remove('hidden', 'text-green-700');
+                    //     discountMessageArea.classList.add('text-red-700');
+                    //     currentOrderTotal = finalTotal;
+                    //     totalOrderPriceSpan.textContent = formatPrice(currentOrderTotal);
+                    //     return;
+                    // }
 
-                    try {
-                        // Query discount codes from Firestore
-                        // Adjusted path to use appId from global __app_id
-                        const q = query(collection(db, `artifacts/${appId}/public/data/discountCodes`), where("code", "==", enteredCode));
-                        const querySnapshot = await getDocs(q);
+                    const discountCodes = await fetchDiscountCodes();
+                    const discountData = discountCodes.find(d => d.Code.toUpperCase() === enteredCode);
 
-                        if (!querySnapshot.empty) {
-                            const discountDoc = querySnapshot.docs[0];
-                            const discountData = discountDoc.data();
-                            const discountRef = doc(db, `artifacts/${appId}/public/data/discountCodes`, discountDoc.id);
+                    if (discountData) {
+                        const now = new Date();
+                        const activationDateStr = discountData.ActivationDate; // e.g., "2025-07-20 14:30:00"
+                        const durationHours = parseFloat(discountData.DurationHours); // e.g., 24, 48
 
-                            // Check expiry date
-                            const now = new Date();
-                            // Ensure expiryDate is treated as a Date object from Firestore Timestamp
-                            const expiryDate = discountData.expiryDate ? discountData.expiryDate.toDate() : null;
+                        if (!activationDateStr || isNaN(durationHours) || durationHours <= 0) {
+                            discountMessageArea.textContent = 'کد تخفیف پیکربندی نشده است (تاریخ فعال‌سازی یا مدت زمان نامعتبر).';
+                            discountMessageArea.classList.remove('hidden', 'text-green-700');
+                            discountMessageArea.classList.add('text-red-700');
+                        } else {
+                            const activationDate = new Date(activationDateStr);
+                            const dynamicExpiryDate = new Date(activationDate.getTime() + (durationHours * 60 * 60 * 1000)); // Add hours in milliseconds
 
-                            if (expiryDate && now > expiryDate) {
+                            if (now < activationDate) {
+                                discountMessageArea.textContent = 'کد تخفیف هنوز فعال نشده است.';
+                                discountMessageArea.classList.remove('hidden', 'text-green-700');
+                                discountMessageArea.classList.add('text-red-700');
+                            } else if (now > dynamicExpiryDate) {
                                 discountMessageArea.textContent = 'کد تخفیف منقضی شده است.';
                                 discountMessageArea.classList.remove('hidden', 'text-green-700');
                                 discountMessageArea.classList.add('text-red-700');
-                            }
-                            // Check usage limit
-                            else if (discountData.usageCount >= discountData.usageLimit) {
+                            } else if (discountData.UsageLimit !== -1 && discountData.UsageCount >= discountData.UsageLimit) {
+                                // -1 means unlimited usage
                                 discountMessageArea.textContent = 'تعداد دفعات استفاده از این کد تخفیف به پایان رسیده است.';
                                 discountMessageArea.classList.remove('hidden', 'text-green-700');
                                 discountMessageArea.classList.add('text-red-700');
-                            }
-                            // Check if code is active for a specific user (if applicable)
-                            // Only check if assignedToUserId exists AND is not empty AND does not match current userId
-                            else if (discountData.assignedToUserId && discountData.assignedToUserId !== "" && discountData.assignedToUserId !== userId) {
-                                discountMessageArea.textContent = 'این کد تخفیف برای شما نیست.';
-                                discountMessageArea.classList.remove('hidden', 'text-green-700');
-                                discountMessageArea.classList.add('text-red-700');
-                            }
-                            else {
+                            } else {
                                 // Apply discount
-                                const discountPercentage = discountData.percentage / 100;
+                                const discountPercentage = parseFloat(discountData.Percentage) / 100;
                                 finalTotal = subtotal * (1 - discountPercentage);
-                                discountMessageArea.textContent = `کد تخفیف "${enteredCode}" اعمال شد! ${convertToPersianDigits(discountData.percentage)}% تخفیف.`;
+                                discountMessageArea.textContent = `کد تخفیف "${enteredCode}" اعمال شد! ${convertToPersianDigits(discountData.Percentage)}% تخفیف.`;
                                 discountMessageArea.classList.remove('hidden', 'text-red-700');
                                 discountMessageArea.classList.add('text-green-700');
                                 discountApplied = true;
                                 appliedDiscountCode = {
-                                    ref: discountRef,
-                                    data: discountData
+                                    code: enteredCode,
+                                    percentage: discountData.Percentage,
+                                    // UsageCount update is NOT implemented in this simple Google Apps Script setup.
+                                    // If you need to track usage, the Apps Script would need to handle POST requests
+                                    // and update the sheet, which adds complexity.
                                 };
                             }
-                        } else {
-                            discountMessageArea.textContent = 'کد تخفیف نامعتبر است.';
-                            discountMessageArea.classList.remove('hidden', 'text-green-700');
-                            discountMessageArea.classList.add('text-red-700');
                         }
-                    } catch (error) {
-                        console.error("Error fetching discount code:", error);
-                        discountMessageArea.textContent = 'خطا در بررسی کد تخفیف. لطفاً اتصال اینترنت خود را بررسی کرده و دوباره تلاش کنید.';
+                    } else {
+                        discountMessageArea.textContent = 'کد تخفیف نامعتبر است.';
                         discountMessageArea.classList.remove('hidden', 'text-green-700');
                         discountMessageArea.classList.add('text-red-700');
                     }
@@ -899,7 +860,7 @@
             });
 
 
-            placeOrderBtn.addEventListener('click', async () => { // Made async to await Firebase update
+            placeOrderBtn.addEventListener('click', async () => {
                 const customerName = customerNameInput.value.trim();
                 const customerPhone = customerPhoneInput.value.trim();
                 const selectedItems = [];
@@ -923,20 +884,6 @@
                     orderDetails += `\nمبلغ کل: ${formatPrice(currentOrderTotal)} تومان`;
                     if (discountApplied) {
                         orderDetails += ` (با اعمال تخفیف)`;
-                    }
-
-                    // Update discount code usage count in Firestore (if a discount was applied)
-                    if (appliedDiscountCode && db) {
-                        try {
-                            const newUsageCount = (appliedDiscountCode.data.usageCount || 0) + 1;
-                            await updateDoc(appliedDiscountCode.ref, {
-                                usageCount: newUsageCount
-                            });
-                            console.log(`Discount code ${appliedDiscountCode.data.code} usage count updated to ${newUsageCount}`);
-                        } catch (error) {
-                            console.error("Error updating discount code usage:", error);
-                            // Still proceed with order, but log the error
-                        }
                     }
 
                     // In a real application, this would send data to a backend (e.g., via fetch to a server or Firebase)
@@ -973,7 +920,7 @@
 
                 try {
                     // تغییرات: استفاده از apiKey که مستقیماً توسط محیط تزریق می شود
-                    const geminiApiKey = typeof apiKey !== 'undefined' ? apiKey : ""; 
+                    const geminiApiKey = typeof apiKey !== 'undefined' ? apiKey : "";
                     if (!geminiApiKey) {
                         throw new Error("Gemini API Key is not configured.");
                     }
@@ -1019,6 +966,7 @@
             // Initial calculation of order total when modal opens
             calculateOrderTotal();
         });
+        console.log("Script fully loaded and executed."); // این خط برای عیب‌یابی اضافه شده است.
     </script>
 </body>
 </html>
