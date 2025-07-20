@@ -540,10 +540,10 @@
 
     <script type="module">
         // ====================================================================================
-        // !!! این خطی است که شما به دنبال آن هستید و اکنون با URL صحیح به‌روز شده است !!!
+        // !!! این خط با URL جدید شما به‌روز شده است !!!
         // ====================================================================================
-        const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwembXbCrgv6_TdiBKdylvpb3jJpujvEigNWD0Db75UZXDujpnGmvod2tj3aSceCBRo0w/exec';
-        console.log("GOOGLE_APPS_SCRIPT_URL:", GOOGLE_APPS_SCRIPT_URL); // اضافه شده برای عیب یابی
+        const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzbDkcjXY1HdiGq9xKfLprUL-raaR7UE99VMZvhss1rQv7QMNtiXNY5BOyqdv8PKoY87A/exec';
+        console.log("GOOGLE_APPS_SCRIPT_URL:", GOOGLE_APPS_SCRIPT_URL);
         // ====================================================================================
 
         document.addEventListener('DOMContentLoaded', async () => {
@@ -624,27 +624,25 @@
                 return convertToPersianDigits(Math.round(price).toLocaleString('fa-IR')); // Use 'fa-IR' for Persian locale formatting, round to avoid decimals from discounts
             }
 
-            // Function to fetch discount codes from Google Apps Script
-            async function fetchDiscountCodes() {
+            // Function to fetch discount code details from Google Apps Script (now sends the code)
+            async function fetchDiscountCodeDetails(code) {
                 try {
-                    console.log("Attempting to fetch discount codes from:", GOOGLE_APPS_SCRIPT_URL); // اضافه شده برای عیب یابی
-                    const response = await fetch(GOOGLE_APPS_SCRIPT_URL);
-                    console.log("Response status for discount codes fetch:", response.status); // اضافه شده برای عیب یابی
+                    const url = `${GOOGLE_APPS_SCRIPT_URL}?code=${encodeURIComponent(code)}`;
+                    console.log("Attempting to fetch discount code details from:", url);
+                    const response = await fetch(url);
+                    console.log("Response status for discount code details fetch:", response.status);
 
                     if (!response.ok) {
-                        const errorText = await response.text(); // سعی کنید متن خطا را نیز دریافت کنید
-                        console.error("HTTP error fetching discount codes. Response text:", errorText); // اضافه شده برای عیب یابی
+                        const errorText = await response.text();
+                        console.error("HTTP error fetching discount code details. Response text:", errorText);
                         throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
                     }
                     const data = await response.json();
-                    console.log("Successfully fetched discount codes data:", data); // اضافه شده برای عیب یابی
+                    console.log("Successfully fetched discount code details data:", data);
                     return data;
                 } catch (error) {
-                    console.error("Error fetching discount codes:", error);
-                    discountMessageArea.textContent = `خطا در دریافت کدهای تخفیف: ${error.message}. لطفاً از اتصال اینترنت و تنظیمات Apps Script اطمینان حاصل کنید.`;
-                    discountMessageArea.classList.remove('hidden', 'text-green-700');
-                    discountMessageArea.classList.add('text-red-700');
-                    return []; // Return empty array on error
+                    console.error("Error fetching discount code details:", error);
+                    return { isValid: false, message: `خطا در ارتباط با سرور تخفیف: ${error.message}` };
                 }
             }
 
@@ -664,76 +662,28 @@
                 appliedDiscountCode = null; // Reset applied code
 
                 const enteredCode = discountCodeInput.value.trim().toUpperCase();
-                console.log("Entered discount code:", enteredCode); // اضافه شده برای عیب یابی
+                console.log("Entered discount code:", enteredCode);
 
                 if (enteredCode) {
                     discountMessageArea.textContent = 'درحال بررسی کد تخفیف...';
                     discountMessageArea.classList.remove('hidden', 'text-red-700', 'text-green-700');
                     discountMessageArea.classList.add('text-gray-600'); // پیام موقت
 
-                    const discountCodes = await fetchDiscountCodes();
-                    console.log("All available discount codes:", discountCodes); // اضافه شده برای عیب یابی
+                    const result = await fetchDiscountCodeDetails(enteredCode);
 
-                    if (discountCodes.length === 0) {
-                        discountMessageArea.textContent = 'خطا: کدهای تخفیف از سرور دریافت نشدند. لطفاً بعداً امتحان کنید.';
-                        discountMessageArea.classList.remove('hidden', 'text-green-700', 'text-gray-600');
-                        discountMessageArea.classList.add('text-red-700');
-                        currentOrderTotal = finalTotal;
-                        totalOrderPriceSpan.textContent = formatPrice(currentOrderTotal);
-                        return;
-                    }
-
-                    const discountData = discountCodes.find(d => d.Code && d.Code.toUpperCase() === enteredCode);
-                    console.log("Found discount data for entered code:", discountData); // اضافه شده برای عیب یابی
-
-                    if (discountData) {
-                        const now = new Date();
-                        const activationDateStr = discountData.ActivationDate;
-                        const durationHours = parseFloat(discountData.DurationHours);
-                        const usageLimit = parseInt(discountData.UsageLimit);
-                        const usageCount = parseInt(discountData.UsageCount);
-
-                        console.log("Discount details - ActivationDate:", activationDateStr, "DurationHours:", durationHours, "UsageLimit:", usageLimit, "UsageCount:", usageCount); // اضافه شده برای عیب یابی
-
-
-                        if (!activationDateStr || isNaN(durationHours) || durationHours <= 0 || isNaN(usageLimit) || isNaN(usageCount)) {
-                            discountMessageArea.textContent = 'کد تخفیف پیکربندی نشده است (اطلاعات نامعتبر).';
-                            discountMessageArea.classList.remove('hidden', 'text-green-700', 'text-gray-600');
-                            discountMessageArea.classList.add('text-red-700');
-                        } else {
-                            const activationDate = new Date(activationDateStr);
-                            const dynamicExpiryDate = new Date(activationDate.getTime() + (durationHours * 60 * 60 * 1000));
-
-                            console.log("Current time:", now, "Activation time:", activationDate, "Expiry time:", dynamicExpiryDate); // اضافه شده برای عیب یابی
-
-                            if (now < activationDate) {
-                                discountMessageArea.textContent = 'کد تخفیف هنوز فعال نشده است.';
-                                discountMessageArea.classList.remove('hidden', 'text-green-700', 'text-gray-600');
-                                discountMessageArea.classList.add('text-red-700');
-                            } else if (now > dynamicExpiryDate) {
-                                discountMessageArea.textContent = 'کد تخفیف منقضی شده است.';
-                                discountMessageArea.classList.remove('hidden', 'text-green-700', 'text-gray-600');
-                                discountMessageArea.classList.add('text-red-700');
-                            } else if (usageLimit !== -1 && usageCount >= usageLimit) {
-                                discountMessageArea.textContent = 'تعداد دفعات استفاده از این کد تخفیف به پایان رسیده است.';
-                                discountMessageArea.classList.remove('hidden', 'text-green-700', 'text-gray-600');
-                                discountMessageArea.classList.add('text-red-700');
-                            } else {
-                                // Apply discount
-                                const discountPercentage = parseFloat(discountData.Percentage) / 100;
-                                finalTotal = subtotal * (1 - discountPercentage);
-                                discountMessageArea.textContent = `کد تخفیف "${enteredCode}" اعمال شد! ${convertToPersianDigits(discountData.Percentage)}% تخفیف.`;
-                                discountMessageArea.classList.remove('hidden', 'text-red-700', 'text-gray-600');
-                                discountMessageArea.classList.add('text-green-700');
-                                discountApplied = true;
-                                appliedDiscountCode = {
-                                    code: enteredCode,
-                                    percentage: discountData.Percentage,
-                                };
-                            }
-                        }
+                    if (result.isValid) {
+                        const discountPercentage = parseFloat(result.percentage) / 100;
+                        finalTotal = subtotal * (1 - discountPercentage);
+                        discountMessageArea.textContent = result.message; // Message comes directly from Apps Script
+                        discountMessageArea.classList.remove('hidden', 'text-red-700', 'text-gray-600');
+                        discountMessageArea.classList.add('text-green-700');
+                        discountApplied = true;
+                        appliedDiscountCode = {
+                            code: enteredCode,
+                            percentage: result.percentage,
+                        };
                     } else {
-                        discountMessageArea.textContent = 'کد تخفیف نامعتبر است.';
+                        discountMessageArea.textContent = result.message; // Error message comes directly from Apps Script
                         discountMessageArea.classList.remove('hidden', 'text-green-700', 'text-gray-600');
                         discountMessageArea.classList.add('text-red-700');
                     }
@@ -982,7 +932,7 @@
             // Initial calculation of order total when modal opens
             calculateOrderTotal();
         });
-        console.log("Script fully loaded and executed."); // این خط برای عیب‌یابی اضافه شده است.
+        console.log("Script fully loaded and executed.");
     </script>
 </body>
 </html>
